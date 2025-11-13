@@ -1,1 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cKool n saSSii | Welcome</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #782F40 0%, #CEB888 100%);
+            min-height: 100vh;
+            color: #ffffff;
+        }
+
+        header {
+            background: rgba(120, 47, 64, 0.95);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-bottom: 4px solid #CEB888;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: #CEB888;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5), 0 0 10px #CEB888;
+            }
+            to {
+                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5), 0 0 20px #CEB888, 0 0 30px #CEB888;
+            }
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            margin-top: 0.5rem;
+            color: #ffffff;
+            font-style: italic;
+        }
+
+        nav {
+            background: rgba(206, 184, 136, 0.2);
+            padding: 1rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        nav a {
+            color: #CEB888;
+            text-decoration: none;
+            margin: 0 1.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background: rgba(206, 184, 136, 0.3);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .hero {
+            background: rgba(120, 47, 64, 0.8);
+            padding: 3rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 3px solid #CEB888;
+            margin-bottom: 3rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            color: #CEB888;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(206, 184, 136, 0.15);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid #CEB888;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(206, 184, 136, 0.4);
+            background: rgba(206, 184, 136, 0.25);
+        }
+
+        .feature-card h3 {
+            color: #CEB888;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #CEB888;
+            color: #782F40;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-button:hover {
+            background: #ffffff;
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(206, 184, 136, 0.6);
+        }
+
+        footer {
+            background: rgba(120, 47, 64, 0.95);
+            color: #CEB888;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 4px solid #CEB888;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>cKool n saSSii</h1>
+        <p class="tagline">Where Style Meets Attitude</p>
+    </header>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h2>Welcome to cKool n saSSii!</h2>
+            <p>Bringing you the perfect blend of cool vibes and sassy style. We're here to make your experience unforgettable with our unique approach and passion for excellence.</p>
+            <a href="#contact" class="cta-button">Get Started</a>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <h3>✨ Cool Vibes</h3>
+                <p>Experience the coolest atmosphere where creativity and innovation meet. We bring fresh perspectives to everything we do.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>💃 Sassy Style</h3>
+                <p>Bold, confident, and unapologetically unique. Our sassy approach sets us apart and keeps things exciting.</p>
+            </div>
+
+            <div class="feature-card">
+                <h3>🎯 Premium Quality</h3>
+                <p>We never compromise on quality. Every detail matters, and we're committed to delivering excellence.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 cKool n saSSii | ckoolsassii.biz</p>
+        <p>Garnet & Gold. Always.</p>
+    </footer>
+</body>
+</html>
