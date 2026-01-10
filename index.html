@@ -1,209 +1,257 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cKool n saSSii | Welcome</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>cKool n saSSii | ckoolsassii.biz</title>
+  <meta name="description" content="Original Classic, Anchor, and Helm designs by cKool n saSSii. College Color Series available in curated colorways." />
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #782F40 0%, #CEB888 100%);
-            min-height: 100vh;
-            color: #ffffff;
-        }
+  <style>
+    :root{
+      --bg:#ffffff;
+      --card:#f8f9fa;
+      --ink:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --radius:14px;
+      --maxw:1100px;
+      --pad:18px;
+      --shadow:0 8px 24px rgba(0,0,0,.08);
+    }
 
-        header {
-            background: rgba(120, 47, 64, 0.95);
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            border-bottom: 4px solid #CEB888;
-        }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+    }
 
-        h1 {
-            font-size: 3.5rem;
-            color: #CEB888;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-            letter-spacing: 2px;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
+    a{text-decoration:none;color:inherit}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
 
-        @keyframes glow {
-            from {
-                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5), 0 0 10px #CEB888;
-            }
-            to {
-                text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5), 0 0 20px #CEB888, 0 0 30px #CEB888;
-            }
-        }
+    header{
+      border-bottom:1px solid var(--line);
+      background:#fff;
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
 
-        .tagline {
-            font-size: 1.3rem;
-            margin-top: 0.5rem;
-            color: #ffffff;
-            font-style: italic;
-        }
+    .nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:14px 0;
+      gap:16px;
+    }
 
-        nav {
-            background: rgba(206, 184, 136, 0.2);
-            padding: 1rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
+    .brand{
+      font-weight:800;
+      letter-spacing:.4px;
+    }
 
-        nav a {
-            color: #CEB888;
-            text-decoration: none;
-            margin: 0 1.5rem;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-        }
+    nav a{
+      margin-right:14px;
+      font-size:14px;
+      color:var(--muted);
+    }
 
-        nav a:hover {
-            background: rgba(206, 184, 136, 0.3);
-            color: #ffffff;
-            transform: translateY(-2px);
-        }
+    nav a:hover{color:#000}
 
-        .container {
-            max-width: 1200px;
-            margin: 3rem auto;
-            padding: 0 2rem;
-        }
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:600;
+      font-size:14px;
+      border:1px solid #000;
+      background:#000;
+      color:#fff;
+    }
 
-        .hero {
-            background: rgba(120, 47, 64, 0.8);
-            padding: 3rem;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 3px solid #CEB888;
-            margin-bottom: 3rem;
-        }
+    .btn.ghost{
+      background:#fff;
+      color:#000;
+    }
 
-        .hero h2 {
-            font-size: 2.5rem;
-            color: #CEB888;
-            margin-bottom: 1rem;
-        }
+    .hero{
+      padding:48px 0 28px;
+    }
 
-        .hero p {
-            font-size: 1.2rem;
-            line-height: 1.8;
-        }
+    .hero h1{
+      font-size:clamp(30px,4vw,46px);
+      margin:0 0 12px;
+    }
 
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
+    .hero p{
+      max-width:820px;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.55;
+    }
 
-        .feature-card {
-            background: rgba(206, 184, 136, 0.15);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 2px solid #CEB888;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
+    .heroActions{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
 
-        .feature-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 12px 40px rgba(206, 184, 136, 0.4);
-            background: rgba(206, 184, 136, 0.25);
-        }
+    .section{
+      padding:28px 0;
+      border-top:1px solid var(--line);
+    }
 
-        .feature-card h3 {
-            color: #CEB888;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+    }
 
-        .feature-card p {
-            line-height: 1.6;
-        }
+    @media(max-width:980px){
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
 
-        .cta-button {
-            display: inline-block;
-            background: #CEB888;
-            color: #782F40;
-            padding: 1rem 2.5rem;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 50px;
-            margin-top: 2rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
+    @media(max-width:520px){
+      .grid{grid-template-columns:1fr}
+    }
 
-        .cta-button:hover {
-            background: #ffffff;
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(206, 184, 136, 0.6);
-        }
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
 
-        footer {
-            background: rgba(120, 47, 64, 0.95);
-            color: #CEB888;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
-            border-top: 4px solid #CEB888;
-        }
-    </style>
+    .placeholder-box{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:220px;
+      border:2px dashed #d1d5db;
+      border-radius:12px;
+      font-weight:600;
+      color:#6b7280;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      background:#ffffff;
+      margin-bottom:10px;
+    }
+
+    .placeholder-text{
+      font-size:14px;
+      font-weight:600;
+      color:#374151;
+      text-align:center;
+    }
+
+    footer{
+      border-top:1px solid var(--line);
+      padding:24px 0 36px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .footerRow{
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:12px;
+    }
+
+    .disclaimer{
+      margin-top:14px;
+      max-width:900px;
+      line-height:1.45;
+    }
+  </style>
 </head>
+
 <body>
-    <header>
-        <h1>cKool n saSSii</h1>
-        <p class="tagline">Where Style Meets Attitude</p>
-    </header>
 
+<header>
+  <div class="wrap nav">
+    <div class="brand">cKool n saSSii</div>
     <nav>
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#services">Styles</a>
-        <a href="#contact">Contact</a>
+      <a href="#classic">Classic</a>
+      <a href="#anchor">Anchor</a>
+      <a href="#helm">Helm</a>
+      <a href="#college">College Color Series</a>
+      <a href="#contact">Contact</a>
     </nav>
+    <a class="btn" href="#shop">Shop</a>
+  </div>
+</header>
 
-    <div class="container">
-        <div class="hero">
-            <h1>Welcome to cKool n saSSii!</h1>
-            <p>Bringing you the perfect blend of cool vibes and sassy style. We're here to make your experience unforgettable with our unique approach and passion for excellence.</p>
-            <a href="#contact" class="cta-button">Get Started</a>
-        </div>
+<main class="wrap">
 
-        <div class="features">
-            <div class="feature-card">
-                <h3>✨ Cool Vibes</h3>
-                <p>Experience the coolest atmosphere where creativity and innovation meet. We bring fresh perspectives to everything we do.</p>
-            </div>
-
-            <div class="feature-card">
-                <h3>💃 Sassy Style</h3>
-                <p>Bold, confident, and unapologetically unique. Our sassy approach sets us apart and keeps things exciting.</p>
-            </div>
-
-            <div class="feature-card">
-                <h3>🎯 Premium Quality</h3>
-                <p>We never compromise on quality. Every detail matters, and we're committed to delivering excellence.</p>
-            </div>
-        </div>
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Classic. Anchor. Helm.</h1>
+    <p>
+      Original nautical-inspired designs by cKool n saSSii.
+      Released in curated colorways for style — not affiliation.
+    </p>
+    <div class="heroActions">
+      <a class="btn" href="#shop">Shop Collections</a>
+      <a class="btn ghost" href="#college">View Colorways</a>
     </div>
+  </section>
 
-    <footer>
-        <p>&copy; 2024 cKool n saSSii | ckoolsassii.biz</p>
-        <p>Always live your kool, Always be saSSii.</p>
-    </footer>
+  <!-- PRODUCT GRID -->
+  <section class="section" id="shop">
+    <div class="grid">
+
+      <div class="card">
+        <div class="placeholder-box">New Design Coming Soon</div>
+        <div class="placeholder-text">Classic Series</div>
+      </div>
+
+      <div class="card">
+        <div class="placeholder-box">New Design Coming Soon</div>
+        <div class="placeholder-text">Anchor Series</div>
+      </div>
+
+      <div class="card">
+        <div class="placeholder-box">New Design Coming Soon</div>
+        <div class="placeholder-text">Helm Series</div>
+      </div>
+
+      <div class="card" id="college">
+        <div class="placeholder-box">New Design Coming Soon</div>
+        <div class="placeholder-text">College Color Series</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="card">
+      <h3>Contact</h3>
+      <p>Questions, bulk orders, or custom requests.</p>
+      <a class="btn" href="mailto:info@ckoolsassii.biz">Email Us</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footerRow">
+    <div>© <span id="year"></span> cKool n saSSii</div>
+    <div>ckoolsassii.biz</div>
+  </div>
+  <div class="wrap disclaimer">
+    Disclaimer: This product is an original design created by <strong>cKool n saSSii</strong> and is not affiliated with,
+    endorsed by, or sponsored by any professional or collegiate sports team or organization.
+    Color palettes are used for stylistic purposes only.
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 </body>
 </html>
