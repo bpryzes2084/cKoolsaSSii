@@ -320,6 +320,73 @@
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
+    /* ── SHOP BY CATEGORY (product-type cards) ── */
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+    }
+    .type-card {
+      --c: var(--cream); --g: var(--navy); --gd: var(--navy-dark); --t: var(--ink); --b: var(--navy); --bt: #fff;
+      grid-column: span 2;
+      position: relative; isolation: isolate; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: space-between;
+      min-height: 300px; padding: 20px;
+      background: var(--c); color: var(--t);
+      border: 0; border-radius: var(--radius);
+      text-align: left; cursor: pointer;
+      font-family: var(--font-body);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .type-card.wide { grid-column: span 3; }
+    .type-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+    .type-card:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+    .type-eyebrow {
+      font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+      opacity: .75;
+    }
+    .type-text { display: flex; flex-direction: column; gap: 8px; max-width: 58%; }
+    .type-card.wide .type-text { max-width: 46%; }
+    .type-name {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(30px, 3.6vw, 42px); line-height: 1; letter-spacing: -.01em;
+    }
+    .type-desc { font-size: 14px; line-height: 1.45; opacity: .85; }
+    .type-cta {
+      align-self: flex-start; margin-top: 6px;
+      background: var(--b); color: var(--bt);
+      padding: 9px 16px; border-radius: 100px;
+      font-weight: 700; font-size: 13px;
+    }
+    .type-art {
+      position: absolute; z-index: -1;
+      right: -2%; top: 10%; width: 50%; max-width: 300px;
+      transition: transform .45s cubic-bezier(.2,.8,.2,1);
+    }
+    .type-card.wide .type-art { top: auto; bottom: -4%; width: 52%; right: 3%; }
+    .type-card:hover .type-art { transform: translateY(-10px) rotate(-4deg); }
+
+    .type-card.hoodies     { --c: var(--navy);      --g: var(--gold);  --gd: var(--gold-dark); --t: #fff; --b: var(--gold); --bt: var(--navy-dark); }
+    .type-card.tshirts     { --c: var(--navy-light); }
+    .type-card.beanies     { --c: var(--gold);      --g: var(--navy);  --gd: var(--navy-dark); --t: var(--navy-dark); --b: var(--navy-dark); }
+    .type-card.caps        { --c: var(--cream);     --g: var(--navy);  --gd: var(--gold-dark); }
+    .type-card.sweatshirts { --c: var(--navy-dark); --g: var(--cream); --gd: var(--gold); --t: #fff; --b: var(--gold); --bt: var(--navy-dark); }
+
+    @media(max-width: 900px) {
+      .type-card, .type-card.wide { grid-column: span 3; }
+      .type-card.last { grid-column: span 6; }
+    }
+    @media(max-width: 560px) {
+      .type-grid { grid-template-columns: 1fr; }
+      .type-card, .type-card.wide, .type-card.last { grid-column: auto; min-height: 260px; }
+      .type-text, .type-card.wide .type-text { max-width: 64%; }
+      .type-art, .type-card.wide .type-art { top: 8%; bottom: auto; right: -2%; width: 44%; }
+    }
+    @media(prefers-reduced-motion: reduce) {
+      .type-card, .type-art { transition: none; }
+      .type-card:hover, .type-card:hover .type-art { transform: none; }
+    }
+
     /* ── FEATURED CARDS ── */
     .featured-grid {
       display: grid;
@@ -678,6 +745,7 @@
       <div class="nav-logo">cKool n <span>saSSii</span></div>
       <div class="nav-links">
         <a href="#shop">Shop</a>
+        <a href="#categories">Categories</a>
         <a href="#collections">Collections</a>
         <a href="#about">About</a>
         <span class="cart-btn-wrap">
@@ -734,6 +802,96 @@
       </div>
     </div>
   </section>
+
+  <!-- ── SHOP BY CATEGORY ── -->
+  <div class="section section-sm" id="categories">
+    <div class="section-header">
+      <h2>Shop by Category</h2>
+      <p>Hoodies, tees, beanies, caps and sweatshirts. Tap a card to see every style.</p>
+    </div>
+    <div class="type-grid">
+      <button class="type-card wide hoodies" data-q="hoodie" aria-label="Shop hoodies">
+        <span class="type-eyebrow">Layer up</span>
+        <span class="type-text">
+          <span class="type-name">Hoodies</span>
+          <span class="type-desc">Pullovers built for cool nights on the water.</span>
+          <span class="type-cta">Shop hoodies →</span>
+        </span>
+        <svg class="type-art" viewBox="0 0 200 200" aria-hidden="true">
+          <path d="M72 44 L52 50 L32 84 L22 164 L42 168 L58 104 L58 172 L142 172 L142 104 L158 168 L178 164 L168 84 L148 50 L128 44 Z" fill="var(--g)"/>
+          <path d="M70 48 Q66 12 100 10 Q134 12 130 48 Q100 66 70 48 Z" fill="var(--g)" stroke="var(--gd)" stroke-width="2.5"/>
+          <path d="M82 46 Q100 58 118 46 Q116 26 100 24 Q84 26 82 46 Z" fill="var(--gd)"/>
+          <path d="M94 56 L92 88 M106 56 L108 88" stroke="var(--gd)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M72 124 L128 124 L138 158 L62 158 Z" fill="none" stroke="var(--gd)" stroke-width="2.5"/>
+          <rect x="58" y="164" width="84" height="8" fill="var(--gd)"/>
+          <path d="M22 164 L42 168 M158 168 L178 164" stroke="var(--gd)" stroke-width="7"/>
+        </svg>
+      </button>
+
+      <button class="type-card wide tshirts" data-q="t-shirt" aria-label="Shop t-shirts">
+        <span class="type-eyebrow">Everyday</span>
+        <span class="type-text">
+          <span class="type-name">T&#8209;Shirts</span>
+          <span class="type-desc">Classic, Anchor and Helm designs on soft tees.</span>
+          <span class="type-cta">Shop t-shirts →</span>
+        </span>
+        <svg class="type-art" viewBox="0 0 200 200" aria-hidden="true">
+          <path d="M70 40 L55 45 L22 72 L40 100 L58 88 L58 174 L142 174 L142 88 L160 100 L178 72 L145 45 L130 40 Q100 64 70 40 Z" fill="var(--g)"/>
+          <path d="M70 40 Q100 64 130 40" fill="none" stroke="var(--gold)" stroke-width="4"/>
+          <path d="M40 100 L58 88 M160 100 L142 88" stroke="var(--gold)" stroke-width="2.5"/>
+          <g fill="none" stroke="var(--gold)" stroke-width="4" stroke-linecap="round">
+            <circle cx="100" cy="96" r="6"/><path d="M100 102 V134 M88 112 H112 M84 124 Q100 142 116 124"/>
+          </g>
+        </svg>
+      </button>
+
+      <button class="type-card beanies" data-q="beanie" aria-label="Shop beanies">
+        <span class="type-eyebrow">Warm up</span>
+        <span class="type-text">
+          <span class="type-name">Beanies</span>
+          <span class="type-desc">Rib-knit toppers for cold mornings.</span>
+          <span class="type-cta">Shop beanies →</span>
+        </span>
+        <svg class="type-art" viewBox="0 0 200 200" aria-hidden="true">
+          <path d="M44 132 Q44 54 100 54 Q156 54 156 132 Z" fill="var(--g)"/>
+          <path d="M66 128 Q66 70 80 62 M88 128 Q88 64 94 56 M112 128 Q112 64 106 56 M134 128 Q134 70 120 62" stroke="var(--c)" stroke-width="2" fill="none" opacity=".35"/>
+          <circle cx="100" cy="44" r="16" fill="var(--gd)"/>
+          <rect x="36" y="126" width="128" height="34" rx="7" fill="var(--gd)"/>
+          <path d="M52 132 V154 M68 132 V154 M84 132 V154 M100 132 V154 M116 132 V154 M132 132 V154 M148 132 V154" stroke="var(--c)" stroke-width="2.5" opacity=".4"/>
+        </svg>
+      </button>
+
+      <button class="type-card caps" data-q="cap" aria-label="Shop caps">
+        <span class="type-eyebrow">Top it off</span>
+        <span class="type-text">
+          <span class="type-name">Caps</span>
+          <span class="type-desc">Adjustable caps with our signature marks.</span>
+          <span class="type-cta">Shop caps →</span>
+        </span>
+        <svg class="type-art" viewBox="0 0 200 200" aria-hidden="true">
+          <path d="M34 124 Q34 62 96 60 Q150 60 158 118 Z" fill="var(--g)"/>
+          <path d="M96 60 Q86 90 90 122 M96 60 Q124 84 128 120" stroke="var(--gd)" stroke-width="2.5" fill="none"/>
+          <circle cx="96" cy="60" r="5" fill="var(--gd)"/>
+          <path d="M34 122 Q110 104 190 132 Q130 150 34 132 Z" fill="var(--navy-dark)"/>
+        </svg>
+      </button>
+
+      <button class="type-card last sweatshirts" data-q="sweatshirt" aria-label="Shop sweatshirts">
+        <span class="type-eyebrow">Crewneck</span>
+        <span class="type-text">
+          <span class="type-name">Sweat&shy;shirts</span>
+          <span class="type-desc">Fleece crews in College Color Series shades.</span>
+          <span class="type-cta">Shop sweatshirts →</span>
+        </span>
+        <svg class="type-art" viewBox="0 0 200 200" aria-hidden="true">
+          <path d="M72 40 L52 46 L32 80 L22 160 L42 164 L58 100 L58 168 L142 168 L142 100 L158 164 L178 160 L168 80 L148 46 L128 40 Q100 58 72 40 Z" fill="var(--g)"/>
+          <path d="M72 40 Q100 58 128 40" fill="none" stroke="var(--gd)" stroke-width="6"/>
+          <rect x="58" y="158" width="84" height="10" fill="var(--gd)"/>
+          <path d="M22 160 L42 164 M158 164 L178 160" stroke="var(--gd)" stroke-width="8"/>
+        </svg>
+      </button>
+    </div>
+  </div>
 
   <!-- ── COLLECTIONS ── -->
   <div class="section section-sm" id="collections">
@@ -1009,7 +1167,7 @@
     });
 
     // ===== CATEGORY TILES =====
-    document.querySelectorAll('.cat-tile').forEach(btn => {
+    document.querySelectorAll('.cat-tile, .type-card').forEach(btn => {
       btn.addEventListener('click', () => {
         const q = btn.dataset.q;
         document.getElementById('q').value = q;
