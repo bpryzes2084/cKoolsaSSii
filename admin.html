@@ -72,6 +72,17 @@
     .label-preview { max-width: 220px; border: 1px solid var(--border); border-radius: 6px; background: #fff; }
     .status-line { color: var(--muted); font-size: 13px; min-height: 20px; }
 
+    .kw { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; margin-bottom: 36px; }
+    .kw p { color: var(--muted); font-size: 14px; max-width: 70ch; }
+    .kw-head, .kw-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) 84px; gap: 8px; align-items: center; }
+    .kw-head { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .kw-row input { padding: 9px 11px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); width: 100%; min-width: 0; }
+    .kw-rows { display: grid; gap: 8px; }
+    @media (max-width: 600px) {
+      .kw-head { display: none; }
+      .kw-row { grid-template-columns: 1fr; padding-bottom: 10px; border-bottom: 1px solid var(--border-light); }
+    }
+
     #printArea { display: none; }
     @media print {
       @page { size: 4in 6in; margin: 0; }
@@ -112,6 +123,18 @@
 
       <h2>Recently shipped <span class="count" id="shippedCount"></span></h2>
       <div class="list" id="shippedList"></div>
+
+      <h2 id="keywords">Search keywords <span class="count" id="kwCount"></span></h2>
+      <section class="kw" aria-labelledby="keywords">
+        <p>Shoppers never see this list. When someone searches a word on the left, the site shows items whose title contains the colorway on the right. Separate several colorways with commas; an item matches if it has any one of them. All words of a colorway must be in the title, in any order.</p>
+        <div class="kw-head"><span>Search word</span><span>Colorway(s) in the item title</span><span></span></div>
+        <div class="kw-rows" id="kwRows"></div>
+        <div class="row">
+          <button class="btn btn-ghost" id="kwAdd" type="button">Add keyword</button>
+          <button class="btn btn-primary" id="kwSave" type="button">Save keywords</button>
+          <span class="status-line" id="kwMsg" role="status"></span>
+        </div>
+      </section>
     </section>
   </div>
 
@@ -181,6 +204,7 @@
       renderList($("shippedList"), data.shipped, true);
       $("toShipCount").textContent = data.to_ship.length ? "(" + data.to_ship.length + ")" : "";
       $("shippedCount").textContent = data.shipped.length ? "(" + data.shipped.length + ")" : "";
+      if (!$("kwRows").children.length) loadKeywords();
     }
 
     function addressText(a, c) {
@@ -283,6 +307,50 @@
 
       return card;
     }
+
+    // ===== SEARCH KEYWORDS =====
+    function kwRow(term, matches) {
+      const row = document.createElement("div");
+      row.className = "kw-row";
+      const n = document.querySelectorAll(".kw-row").length + 1 + Math.floor(Math.random() * 1e6);
+      row.innerHTML =
+        '<input type="text" maxlength="60" aria-label="Search word" placeholder="e.g. tar heels" id="kwt' + n + '">' +
+        '<input type="text" maxlength="400" aria-label="Colorways" placeholder="e.g. Carolina Blue" id="kwm' + n + '">' +
+        '<button class="btn btn-ghost" type="button">Remove</button>';
+      row.children[0].value = term || "";
+      row.children[1].value = (matches || []).join(", ");
+      row.children[2].addEventListener("click", () => { row.remove(); kwDirty(); });
+      row.addEventListener("input", kwDirty);
+      return row;
+    }
+    function kwDirty() { $("kwMsg").textContent = "Unsaved changes"; }
+    function renderKeywords(list) {
+      const rows = $("kwRows");
+      rows.innerHTML = "";
+      list.forEach(k => rows.appendChild(kwRow(k.term, k.matches)));
+      if (!list.length) rows.appendChild(kwRow("", []));
+      $("kwCount").textContent = list.length ? "(" + list.length + ")" : "";
+    }
+    async function loadKeywords() {
+      try { renderKeywords((await api("/admin/keywords")).keywords || []); $("kwMsg").textContent = ""; }
+      catch (err) { $("kwMsg").textContent = err.message; }
+    }
+    $("kwAdd").addEventListener("click", () => { const r = kwRow("", []); $("kwRows").appendChild(r); r.children[0].focus(); });
+    $("kwSave").addEventListener("click", async () => {
+      const keywords = [...document.querySelectorAll(".kw-row")].map(r => ({
+        term: r.children[0].value.trim(),
+        matches: r.children[1].value.split(",").map(x => x.trim()).filter(Boolean)
+      })).filter(k => k.term || k.matches.length);
+      const incomplete = keywords.filter(k => !k.term || !k.matches.length);
+      if (incomplete.length) { $("kwMsg").textContent = "Each row needs both a search word and a colorway."; return; }
+      $("kwSave").disabled = true; $("kwMsg").textContent = "Saving…";
+      try {
+        const r = await api("/admin/keywords", { method: "PUT", body: { keywords } });
+        renderKeywords(r.keywords || []);
+        $("kwMsg").textContent = "Saved. Search uses the new list within a minute.";
+      } catch (err) { $("kwMsg").textContent = err.message; }
+      finally { $("kwSave").disabled = false; }
+    });
 
     function printLabel(b64) {
       if (!b64) return;
