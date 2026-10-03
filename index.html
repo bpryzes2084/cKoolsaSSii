@@ -38,6 +38,7 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    [hidden] { display: none !important; }
 
     body {
       font-family: var(--font-body);
@@ -73,6 +74,7 @@
       font-weight: 600; transition: color .2s;
     }
     .nav-links a:hover { color: var(--ink); }
+    .ico { flex-shrink: 0; }
     .cart-btn {
       background: var(--navy); color: #fff;
       border: 0; padding: 10px 18px; border-radius: var(--radius-sm);
@@ -120,7 +122,7 @@
       margin-bottom: 20px;
       animation: fadeInUp .6s ease both;
     }
-    .hero-tag::before { content: '⚓'; }
+    .hero-tag .ico { width: 15px; height: 15px; }
     .hero h1 {
       font-family: var(--font-display);
       font-size: clamp(36px, 5vw, 56px);
@@ -178,16 +180,24 @@
     }
     .perks-scroll {
       display: flex;
-      animation: scrollPerks 22s linear infinite;
+      width: max-content;
+      animation: scrollPerks 40s linear infinite;
       white-space: nowrap;
     }
+    .perks-set { display: flex; }
+    .perks-bar:hover .perks-scroll { animation-play-state: paused; }
+    @media (prefers-reduced-motion: reduce) {
+      .perks-scroll { animation: none; }
+      .perks-set[aria-hidden="true"] { display: none; }
+      .perks-set { flex-wrap: wrap; justify-content: center; width: 100vw; }
+    }
     .perk-item {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 40px;
-      font-size: 14px; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 9px 28px;
+      font-size: 13px; font-weight: 600; letter-spacing: .02em;
       flex-shrink: 0;
     }
-    .perk-item span { opacity: .6; }
+    .perk-item::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); margin-left: 28px; }
 
     @keyframes scrollPerks {
       0% { transform: translateX(0); }
@@ -321,7 +331,8 @@
       box-shadow: var(--shadow-lg);
       border-color: var(--navy);
     }
-    .cat-icon { font-size: 40px; display: block; line-height: 1; }
+    .cat-icon { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 16px; background: var(--navy-light); color: var(--navy); transition: background .25s, color .25s; }
+    .cat-tile:hover .cat-icon { background: var(--navy); color: var(--gold); }
     .cat-label { font-size: 14px; font-weight: 700; color: var(--ink); }
 
     @media(max-width: 700px) {
@@ -401,6 +412,7 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 20px;
     }
+    .featured-img img { width: 100%; height: 100%; object-fit: cover; background: var(--cream); }
     .featured-card {
       background: var(--white);
       border: 1px solid var(--border);
@@ -413,7 +425,7 @@
       box-shadow: var(--shadow-hover);
     }
     .featured-img {
-      height: 160px;
+      height: 220px; background: linear-gradient(135deg, var(--navy) 0%, #2c4270 100%); color: var(--gold);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -485,6 +497,7 @@
     .value-card:hover::before { opacity: 1; }
     .value-icon {
       width: 56px; height: 56px; margin: 0 auto 16px;
+      color: var(--navy);
       background: var(--navy-light);
       border-radius: 14px;
       display: flex; align-items: center; justify-content: center;
@@ -535,15 +548,6 @@
       padding: 50px 40px;
       position: relative;
       overflow: hidden;
-    }
-    .about-visual::after {
-      content: '⚓🧭⛵🪢🌊';
-      position: absolute;
-      font-size: 80px;
-      opacity: .10;
-      bottom: -10px; right: -10px;
-      letter-spacing: -8px;
-      transform: rotate(-12deg);
     }
     .about-stat { margin-bottom: 24px; }
     .about-stat:last-child { margin-bottom: 0; }
@@ -793,30 +797,26 @@
         <a href="#about">About</a>
         <span class="cart-btn-wrap">
           <button id="openCartBtn" class="cart-btn">
-            🛒 Cart <span class="cart-badge" id="cartCount">0</span>
+            <svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg> Cart <span class="cart-badge" id="cartCount">0</span>
           </button>
         </span>
       </div>
     </div>
   </nav>
 
+  <!-- ── PERKS STRIP ── -->
+  <div class="perks-bar" aria-label="Store highlights">
+    <div class="perks-scroll">
+      <div class="perks-set"><div class="perk-item">Original nautical designs</div><div class="perk-item">College Color Series available</div><div class="perk-item">Ships UPS Ground with tracking</div><div class="perk-item">Classic · Anchor · Helm · College Color</div></div>
+      <div class="perks-set" aria-hidden="true"><div class="perk-item">Original nautical designs</div><div class="perk-item">College Color Series available</div><div class="perk-item">Ships UPS Ground with tracking</div><div class="perk-item">Classic · Anchor · Helm · College Color</div></div>
+    </div>
+  </div>
+
   <!-- ── HERO ── -->
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-text">
-        <div class="perks-bar" style="border-radius:var(--radius-sm);margin-bottom:20px;">
-          <div class="perks-scroll">
-            <div class="perk-item">⚓ Original nautical designs <span>•</span></div>
-            <div class="perk-item">🎨 College Color Series available <span>•</span></div>
-            <div class="perk-item">📦 Orders shipped via UPS <span>•</span></div>
-            <div class="perk-item">🧭 Classic · Anchor · Helm <span>•</span></div>
-            <div class="perk-item">⚓ Original nautical designs <span>•</span></div>
-            <div class="perk-item">🎨 College Color Series available <span>•</span></div>
-            <div class="perk-item">📦 Ships via calculated shipping <span>•</span></div>
-            <div class="perk-item">🧭 Classic · Anchor · Helm <span>•</span></div>
-          </div>
-        </div>
-        <div class="hero-tag">Original Designs</div>
+        <div class="hero-tag"><svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><path d="M12 7v14"/><path d="M8 11h8"/><path d="M5 14a7 7 0 0 0 14 0"/><path d="M5 14l-2 1.5M19 14l2 1.5"/></svg>Original Designs</div>
         <h1><em>Classic. Anchor. Helm.</em></h1>
         <p class="hero-desc">
           Nautical-inspired originals released in curated colorways.
@@ -833,9 +833,9 @@
         <div id="shop">
           <div class="search-section">
             <h2>Search</h2>
-            <p class="search-subtitle">Browse our catalog — Classic, Anchor, Helm, and College Color Series designs.</p>
+            <p class="search-subtitle">Search by product, collection or colorway, or leave it blank and press Search to see everything.</p>
             <form id="ck-search" class="search-form" autocomplete="off">
-              <input id="q" type="search" placeholder='Try "classic", "anchor", "helm", "college"…' />
+              <input id="q" type="search" placeholder='Try "hoodie", "anchor" or "carolina blue"' />
               <button id="go" type="submit">Search</button>
             </form>
             <div id="search-status" class="search-status"></div>
@@ -941,94 +941,36 @@
   <div class="section section-sm" id="collections">
     <div class="section-header">
       <h2>Shop by Collection</h2>
-      <p>Tap a collection to search our catalog instantly.</p>
+      <p>Our four signature lines, each released in curated colorways.</p>
     </div>
     <div class="cat-grid">
       <button class="cat-tile" data-q="classic">
-        <span class="cat-icon">✨</span>
+        <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></span>
         <span class="cat-label">Classic</span>
       </button>
       <button class="cat-tile" data-q="anchor">
-        <span class="cat-icon">⚓</span>
+        <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><path d="M12 7v14"/><path d="M8 11h8"/><path d="M5 14a7 7 0 0 0 14 0"/><path d="M5 14l-2 1.5M19 14l2 1.5"/></svg></span>
         <span class="cat-label">Anchor</span>
       </button>
       <button class="cat-tile" data-q="helm">
-        <span class="cat-icon">🧭</span>
+        <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="1.6"/><path d="M12 2.5v3.5M12 18v3.5M2.5 12H6M18 12h3.5M5.3 5.3l2.5 2.5M16.2 16.2l2.5 2.5M5.3 18.7l2.5-2.5M16.2 7.8l2.5-2.5"/></svg></span>
         <span class="cat-label">Helm</span>
       </button>
       <button class="cat-tile" data-q="college color">
-        <span class="cat-icon">🎨</span>
+        <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3v18"/><path d="M4 4l16 5-16 5"/><path d="M8 7.5v3.5"/></svg></span>
         <span class="cat-label">College Color Series</span>
-      </button>
-      <button class="cat-tile" data-q="t-shirt">
-        <span class="cat-icon">👕</span>
-        <span class="cat-label">T-Shirts</span>
-      </button>
-      <button class="cat-tile" data-q="hoodie">
-        <span class="cat-icon">🧥</span>
-        <span class="cat-label">Hoodies</span>
-      </button>
-      <button class="cat-tile" data-q="hat">
-        <span class="cat-icon">🧢</span>
-        <span class="cat-label">Hats</span>
-      </button>
-      <button class="cat-tile" data-q="accessories">
-        <span class="cat-icon">🎒</span>
-        <span class="cat-label">Accessories</span>
       </button>
     </div>
   </div>
 
   <!-- ── POPULAR PICKS ── -->
-  <div class="section section-sm" id="featured">
+  <div class="section section-sm" id="featured" hidden>
     <div class="section-header">
       <h2>Popular Picks</h2>
-      <p>Our signature collections and newest drops.</p>
+      <p>A few favorites from the shop right now.</p>
     </div>
-    <div class="featured-grid">
-      <div class="featured-card">
-        <div class="featured-img" style="background:linear-gradient(135deg, #1b2a4a 0%, #2c4270 100%);">
-          <span style="font-size:56px;">⚓</span>
-        </div>
-        <div class="featured-info">
-          <div class="featured-name">Anchor Series</div>
-          <div class="featured-price-label">Bold nautical anchor designs</div>
-          <button class="btn-featured" data-q="anchor">Shop Anchor</button>
-        </div>
-      </div>
-      <div class="featured-card">
-        <div class="featured-img" style="background:linear-gradient(135deg, #c9a84c 0%, #a88b3a 100%);">
-          <span style="font-size:56px;">🧭</span>
-        </div>
-        <div class="featured-info">
-          <div class="featured-name">Helm Series</div>
-          <div class="featured-price-label">Ship's wheel originals</div>
-          <button class="btn-featured" data-q="helm">Shop Helm</button>
-        </div>
-      </div>
-      <div class="featured-card">
-        <div class="featured-img" style="background:linear-gradient(135deg, #0f0f0f 0%, #2a2a2a 100%);">
-          <span style="font-size:56px;">✨</span>
-        </div>
-        <div class="featured-info">
-          <div class="featured-name">Classic Series</div>
-          <div class="featured-price-label">Signature originals</div>
-          <button class="btn-featured" data-q="classic">Shop Classic</button>
-        </div>
-      </div>
-      <div class="featured-card">
-        <div class="featured-img" style="background:linear-gradient(135deg, #2d7a3a 0%, #1f5c2a 100%);">
-          <span style="font-size:56px;">🏅</span>
-        </div>
-        <div class="featured-info">
-          <div class="featured-name">Sport Series</div>
-          <div class="featured-price-label">Athletic-inspired styles</div>
-          <button class="btn-featured" data-q="sport">Shop Sport</button>
-        </div>
-      </div>
-    </div>
+    <div class="featured-grid" id="featuredGrid"></div>
   </div>
-
 
   <!-- ── VALUE PROPS ── -->
   <div class="section section-sm">
@@ -1038,24 +980,24 @@
     </div>
     <div class="value-grid">
       <div class="value-card">
-        <div class="value-icon">🎨</div>
+        <div class="value-icon"><svg class="ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></svg></div>
         <h4>100% Original</h4>
         <p>Every design is an original creation by cKool n saSSii. Not affiliated with any team or organization.</p>
       </div>
       <div class="value-card">
-        <div class="value-icon">🧭</div>
+        <div class="value-icon"><svg class="ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></div>
         <h4>Nautical Heritage</h4>
         <p>Anchors, helms, and classic maritime motifs reimagined for modern streetwear and everyday style.</p>
       </div>
       <div class="value-card">
-        <div class="value-icon">🎓</div>
+        <div class="value-icon"><svg class="ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/><path d="M22 9v6"/></svg></div>
         <h4>College Color Series</h4>
         <p>Curated colorways inspired by school spirit. Wear the colors you love — styled our way.</p>
       </div>
       <div class="value-card">
-        <div class="value-icon">📦</div>
-        <h4>Calculated Shipping</h4>
-        <p>Fair, calculated shipping on every order. No hidden fees, no inflated rates.</p>
+        <div class="value-icon"><svg class="ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h11v10H2z"/><path d="M13 9h4l4 4v3h-8z"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg></div>
+        <h4>UPS Ground Shipping</h4>
+        <p>Live UPS Ground rates from your ZIP code, shown before you pay. Every order ships with tracking.</p>
       </div>
     </div>
   </div>
@@ -1070,7 +1012,7 @@
       <div class="how-step">
         <div class="how-num">1</div>
         <h4>Search &amp; Browse</h4>
-        <p>Explore our collections using the search bar. Filter by Classic, Anchor, Helm, or College Color Series.</p>
+        <p>Search by product, collection or colorway, or tap a category card to see everything in it.</p>
       </div>
       <div class="how-step">
         <div class="how-num">2</div>
@@ -1080,7 +1022,7 @@
       <div class="how-step">
         <div class="how-num">3</div>
         <h4>Checkout &amp; Ship</h4>
-        <p>Secure checkout powered by Square. Your order ships with tracking and calculated shipping rates.</p>
+        <p>Enter your ZIP for a UPS Ground rate, then pay securely with Square. You'll get tracking when it ships.</p>
       </div>
     </div>
   </div>
@@ -1094,7 +1036,7 @@
           <div class="label">Original designs, every piece</div>
         </div>
         <div class="about-stat">
-          <div class="num">3</div>
+          <div class="num">4</div>
           <div class="label">Signature collections</div>
         </div>
 
@@ -1102,7 +1044,7 @@
       <div class="about-text">
         <h2>Wear the Wave</h2>
         <p>
-          <strong>cKool n saSSii</strong> was born from a love of nautical style and a belief that original design matters. Every piece — from the Classic to the Anchor to the Helm — is created in-house and released in curated colorways.
+          <strong>cKool n saSSii</strong> was born from a love of nautical style and a belief that original design matters. Every piece, from the Classic to the Anchor to the Helm, is created in-house and released in curated colorways.
         </p>
         <p>
           Our <strong>College Color Series</strong> brings school-inspired palettes to our original designs. These aren't knockoffs or replicas — they're cKool n saSSii originals rendered in the colors you rep.
@@ -1127,14 +1069,15 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="nav-logo">cKool n <span>saSSii</span></div>
-          <p>Original nautical-inspired designs. Classic, Anchor, and Helm collections in curated colorways — because style should be yours.</p>
+          <p>Original nautical-inspired designs. Classic, Anchor, Helm and College Color Series, released in curated colorways.</p>
         </div>
         <div class="footer-col">
           <h5>Shop</h5>
-          <a href="#shop">Browse All</a>
-          <a href="#collections">Classic</a>
-          <a href="#collections">Anchor</a>
-          <a href="#collections">Helm</a>
+          <a href="#shop" data-q="">Browse All</a>
+          <a href="#shop" data-q="classic">Classic</a>
+          <a href="#shop" data-q="anchor">Anchor</a>
+          <a href="#shop" data-q="helm">Helm</a>
+          <a href="#shop" data-q="college color">College Color Series</a>
         </div>
         <div class="footer-col">
           <h5>Company</h5>
@@ -1153,9 +1096,6 @@
       </div>
       <div class="footer-bottom">
         <div>&copy; <span id="year"></span> cKool n saSSii &middot; A division of BSM Enterpryzes</div>
-        <div>
-          <a href="/privacy-policy.html">Privacy</a> &middot; <a href="/terms-of-service.html">Terms</a>
-        </div>
       </div>
       <div class="disclaimer">
         Disclaimer: This product is an original design created by <strong>cKool n saSSii</strong> and is not affiliated with,
@@ -1225,25 +1165,19 @@
       });
     });
 
-    // ===== CATEGORY TILES =====
-    document.querySelectorAll('.cat-tile, .type-card').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const q = btn.dataset.q;
-        document.getElementById('q').value = q;
-        document.getElementById('ck-search').dispatchEvent(new Event('submit'));
-        document.getElementById('shop').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-
-    // ===== FEATURED BUTTONS =====
-    document.querySelectorAll('.btn-featured').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const q = btn.dataset.q;
-        document.getElementById('q').value = q;
-        document.getElementById('ck-search').dispatchEvent(new Event('submit'));
-        document.getElementById('shop').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
+    // ===== QUICK SEARCHES (category cards, collection tiles, footer links, picks) =====
+    function runSearch(q) {
+      document.getElementById('q').value = q;
+      document.getElementById('ck-search').dispatchEvent(new Event('submit', { cancelable: true }));
+      document.getElementById('shop').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    document.addEventListener('click', e => {
+      const el = e.target.closest('[data-q]');
+      if (!el) return;
+      e.preventDefault();
+      e.stopPropagation();
+      runSearch(el.dataset.q || '');
+    }, true);
 
     // ===== CART (localStorage) =====
     function formatMoney(n){ return "$" + Number(n).toFixed(2); }
@@ -1536,7 +1470,7 @@
       resultsDiv.innerHTML = "";
       statusEl.textContent = "";
 
-      if (!q) { statusEl.textContent = "Type something to search our catalog."; return; }
+
 
       searchBtn.disabled = true;
       searchBtn.textContent = "Searching…";
@@ -1564,11 +1498,13 @@
         const items = (data.objects || []).filter(o => o.type === "ITEM");
 
         if (!items.length) {
-          statusEl.textContent = "No items found. Try a different search.";
+          statusEl.textContent = q ? "No items found for \u201c" + q + "\u201d. Try a product type like \u201choodie\u201d or a colorway." : "No items are available right now.";
           return;
         }
 
-        statusEl.textContent = "Found " + items.length + (items.length === 1 ? " item" : " items") + " for \u201c" + q + "\u201d.";
+        statusEl.textContent = q
+          ? "Found " + items.length + (items.length === 1 ? " item" : " items") + " for \u201c" + q + "\u201d."
+          : "Showing all " + items.length + (items.length === 1 ? " item." : " items.");
 
         const frag = document.createDocumentFragment();
 
@@ -1668,6 +1604,38 @@
       banner.querySelector("button").addEventListener("click", () => banner.remove());
       document.body.appendChild(banner);
       setTimeout(() => banner.remove(), 12000);
+    })();
+
+    // ===== POPULAR PICKS (real items from the shop) =====
+    (async function loadPicks() {
+      try {
+        const res = await fetch(SEARCH_ENDPOINT + "?q=");
+        if (!res.ok) return;
+        const data = await res.json();
+        const items = (data.objects || []).filter(o => o.type === "ITEM" && !o.sold_out);
+        const picks = items.filter(o => o.image_url).concat(items.filter(o => !o.image_url)).slice(0, 4);
+        if (!picks.length) return;
+        const grid = document.getElementById("featuredGrid");
+        picks.forEach(o => {
+          const d = o.item_data || {};
+          const prices = (d.variations || []).map(v => v.item_variation_data && v.item_variation_data.price_money)
+            .filter(Boolean).map(m => m.amount / 100);
+          const low = prices.length ? Math.min.apply(null, prices) : null;
+          const many = prices.length > 1 && Math.max.apply(null, prices) !== low;
+          const card = document.createElement("div");
+          card.className = "featured-card";
+          card.innerHTML =
+            '<div class="featured-img">' + (o.image_url ? '<img src="' + escapeHtml(o.image_url) + '" alt="' + escapeHtml(d.name) + '" loading="lazy">' : '') + '</div>' +
+            '<div class="featured-info">' +
+              '<div class="featured-name">' + escapeHtml(d.name) + '</div>' +
+              '<div class="featured-price-label">' + (low != null ? (many ? "From " : "") + formatMoney(low) : "") + '</div>' +
+              '<button class="btn-featured" type="button">View</button>' +
+            '</div>';
+          card.querySelector(".btn-featured").dataset.q = d.name || "";
+          grid.appendChild(card);
+        });
+        document.getElementById("featured").hidden = false;
+      } catch (e) { /* section stays hidden */ }
     })();
 
     // Init cart UI on load
