@@ -287,6 +287,12 @@
     }
     .btn-add:hover { background: var(--navy-dark); transform: translateY(-1px); }
     .btn-add:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .size-select {
+      width: 100%; margin-bottom: 8px; padding: 9px 12px;
+      border-radius: var(--radius-sm); border: 1.5px solid var(--border);
+      font-family: var(--font-body); font-size: 14px; background: var(--white); color: var(--ink);
+    }
+    .size-select:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(27,42,74,.1); }
 
     /* ── CATEGORIES ── */
     .cat-grid {
@@ -1145,7 +1151,9 @@
 
   <script>
     // ===== CONFIG =====
-    const API_BASE = "/api";
+    // Leave as "/api" when the worker is routed on ckoolsassii.biz/api/*.
+    // Otherwise set window.CK_API_BASE to the worker address, e.g. "https://ckoolsassii-worker.<you>.workers.dev".
+    const API_BASE = (window.CK_API_BASE || "/api").replace(/\/+$/, "");
     const SEARCH_ENDPOINT = API_BASE + "/search";
     const CHECKOUT_ENDPOINT = API_BASE + "/create-checkout";
 
@@ -1401,7 +1409,7 @@
           return;
         }
 
-        statusEl.textContent = "Found " + items.length + " item(s).";
+        statusEl.textContent = "Found " + items.length + (items.length === 1 ? " item" : " items") + " for \u201c" + q + "\u201d.";
 
         const frag = document.createDocumentFragment();
 
@@ -1411,31 +1419,63 @@
           const desc = itemData.description || "";
           const image = obj.image_url || "";
 
-          const firstVar = itemData.variations && itemData.variations[0];
-          const variationId = firstVar ? firstVar.id : null;
-          const varData = firstVar ? firstVar.item_variation_data : null;
-          const priceMoney = varData ? varData.price_money : null;
-          const price = priceMoney ? (priceMoney.amount / 100) : null;
+          const variations = (itemData.variations || []).filter(v => v && v.id);
+          const firstOpen = variations.find(v => !v.sold_out) || variations[0] || null;
+          const allSoldOut = !variations.length || variations.every(v => v.sold_out);
+          const priceOf = v => {
+            const m = v && v.item_variation_data && v.item_variation_data.price_money;
+            return m ? m.amount / 100 : null;
+          };
+          const sizeLabel = v => (v.item_variation_data && v.item_variation_data.name) || "Standard";
 
           const card = document.createElement("div");
           card.className = "product-card";
 
+          let sizePicker = "";
+          if (variations.length > 1) {
+            sizePicker = '<select class="size-select" aria-label="Choose size for ' + escapeHtml(name) + '">' +
+              variations.map(v =>
+                '<option value="' + escapeHtml(v.id) + '"' +
+                  (v.sold_out ? ' disabled' : '') +
+                  (firstOpen && v.id === firstOpen.id ? ' selected' : '') + '>' +
+                  escapeHtml(sizeLabel(v)) + (v.sold_out ? ' (sold out)' : '') +
+                '</option>').join("") +
+            '</select>';
+          }
+
+          const startPrice = priceOf(firstOpen);
           card.innerHTML =
-            (image ? '<img class="product-image" src="' + image + '" alt="' + escapeHtml(name) + '" onerror="this.style.display=\'none\'">' : '') +
+            (image ? '<img class="product-image" src="' + escapeHtml(image) + '" alt="' + escapeHtml(name) + '" loading="lazy" onerror="this.style.display=\'none\'">' : '') +
             '<div class="product-name">' + escapeHtml(name) + '</div>' +
-            '<div class="product-price">' + (price != null ? formatMoney(price) : "Price N/A") + '</div>' +
+            '<div class="product-price">' + (startPrice != null ? formatMoney(startPrice) : "Price N/A") + '</div>' +
             '<div class="product-desc">' + escapeHtml(desc) + '</div>' +
             '<div class="product-actions">' +
-              '<button class="btn-add" ' + (!variationId ? "disabled" : "") + '>' +
-                (variationId ? "Add to Cart" : "Unavailable") +
+              sizePicker +
+              '<button class="btn-add" ' + (allSoldOut ? "disabled" : "") + '>' +
+                (allSoldOut ? "Sold Out" : "Add to Cart") +
               '</button>' +
             '</div>';
 
           const btn = card.querySelector(".btn-add");
-          if (variationId) {
+          const select = card.querySelector(".size-select");
+          const priceEl = card.querySelector(".product-price");
+          const chosen = () => select ? variations.find(v => v.id === select.value) : firstOpen;
+
+          if (select) {
+            select.addEventListener("change", () => {
+              const p = priceOf(chosen());
+              priceEl.textContent = p != null ? formatMoney(p) : "Price N/A";
+            });
+          }
+
+          if (!allSoldOut) {
             btn.addEventListener("click", () => {
-              addToCart({ variationId: variationId, name: name, price: (price != null ? price : 0), image: image });
-              document.getElementById("checkoutStatus").textContent = name + " added ✓";
+              const v = chosen();
+              if (!v || v.sold_out) return;
+              const p = priceOf(v);
+              const label = variations.length > 1 ? name + " (" + sizeLabel(v) + ")" : name;
+              addToCart({ variationId: v.id, name: label, price: (p != null ? p : 0), image: image });
+              document.getElementById("checkoutStatus").textContent = label + " added ✓";
               document.getElementById("cartPanel").classList.remove("cart-hidden");
             });
           }
