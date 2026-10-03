@@ -257,6 +257,8 @@
       gap: 20px;
       margin-top: 28px;
     }
+    .results-grid:empty { display: none; }
+    #shop, #categories, #collections, #about, #how { scroll-margin-top: 80px; }
     .product-card {
       background: var(--white);
       border: 1px solid var(--border);
@@ -802,6 +804,7 @@
               <button id="go" type="submit">Search</button>
             </form>
             <div id="search-status" class="search-status"></div>
+            <div id="results" class="results-grid"></div>
           </div>
         </div>
 
@@ -991,10 +994,6 @@
     </div>
   </div>
 
-  <!-- ── SEARCH RESULTS ── -->
-  <div class="section" id="shop-results" style="padding-top:0">
-    <div id="results" class="results-grid"></div>
-  </div>
 
   <!-- ── VALUE PROPS ── -->
   <div class="section section-sm">
