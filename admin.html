@@ -78,6 +78,12 @@
     .kw-head { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
     .kw-row input { padding: 9px 11px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); width: 100%; min-width: 0; }
     .kw-rows { display: grid; gap: 8px; }
+    .kw-bulk { border-top: 1px solid var(--border-light); padding-top: 14px; display: grid; gap: 8px; }
+    .kw-bulk summary { cursor: pointer; font-weight: 700; font-size: 14px; }
+    .kw-bulk textarea {
+      width: 100%; min-height: 160px; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      background: var(--bg); font-family: ui-monospace, Menlo, monospace; font-size: 13px; line-height: 1.5; resize: vertical;
+    }
     @media (max-width: 600px) {
       .kw-head { display: none; }
       .kw-row { grid-template-columns: 1fr; padding-bottom: 10px; border-bottom: 1px solid var(--border-light); }
@@ -129,6 +135,16 @@
         <p>Shoppers never see this list. When someone searches a word on the left, the site shows items whose title contains the colorway on the right. Separate several colorways with commas; an item matches if it has any one of them. All words of a colorway must be in the title, in any order.</p>
         <div class="kw-head"><span>Search word</span><span>Colorway(s) in the item title</span><span></span></div>
         <div class="kw-rows" id="kwRows"></div>
+        <details class="kw-bulk" id="kwBulk">
+          <summary>Paste a list</summary>
+          <p>One keyword per line, written as <code>search word = colorway</code>. Use commas for several colorways, e.g. <code>steelers = Black Gold</code>. Lines for a word already in the list add to it. Click <strong>Add to list</strong>, check the rows, then <strong>Save keywords</strong>.</p>
+          <label for="kwPaste" class="lbl">List</label>
+          <textarea id="kwPaste" spellcheck="false" placeholder="steelers = Black Gold&#10;pirates = Black Gold&#10;gators = Orange Blue&#10;tar heels = Carolina Blue"></textarea>
+          <div class="row">
+            <button class="btn btn-ghost" id="kwImport" type="button">Add to list</button>
+            <button class="btn btn-ghost" id="kwExport" type="button">Show current list as text</button>
+          </div>
+        </details>
         <div class="row">
           <button class="btn btn-ghost" id="kwAdd" type="button">Add keyword</button>
           <button class="btn btn-primary" id="kwSave" type="button">Save keywords</button>
@@ -335,12 +351,39 @@
       try { renderKeywords((await api("/admin/keywords")).keywords || []); $("kwMsg").textContent = ""; }
       catch (err) { $("kwMsg").textContent = err.message; }
     }
-    $("kwAdd").addEventListener("click", () => { const r = kwRow("", []); $("kwRows").appendChild(r); r.children[0].focus(); });
-    $("kwSave").addEventListener("click", async () => {
-      const keywords = [...document.querySelectorAll(".kw-row")].map(r => ({
+    function kwCurrent() {
+      return [...document.querySelectorAll(".kw-row")].map(r => ({
         term: r.children[0].value.trim(),
         matches: r.children[1].value.split(",").map(x => x.trim()).filter(Boolean)
       })).filter(k => k.term || k.matches.length);
+    }
+    $("kwImport").addEventListener("click", () => {
+      const lines = $("kwPaste").value.split(/\r?\n/).map(l => l.trim()).filter(l => l && !l.startsWith("#"));
+      const bad = [];
+      const map = new Map();
+      kwCurrent().forEach(k => map.set(k.term.toLowerCase(), { term: k.term, matches: k.matches.slice() }));
+      lines.forEach(line => {
+        const m = line.match(/^(.+?)\s*(?:=|:|\t)\s*(.+)$/);
+        if (!m) { bad.push(line); return; }
+        const term = m[1].trim(), matches = m[2].split(",").map(x => x.trim()).filter(Boolean);
+        if (!term || !matches.length) { bad.push(line); return; }
+        const key = term.toLowerCase();
+        const cur = map.get(key) || { term, matches: [] };
+        matches.forEach(x => { if (!cur.matches.some(y => y.toLowerCase() === x.toLowerCase())) cur.matches.push(x); });
+        map.set(key, cur);
+      });
+      const list = [...map.values()].filter(k => k.term && k.matches.length);
+      renderKeywords(list);
+      $("kwMsg").textContent = (lines.length - bad.length) + " line(s) added" + (bad.length ? ", " + bad.length + " skipped (use: word = colorway): " + bad.slice(0, 3).join(" | ") : "") + ". Click Save keywords to keep them.";
+      if (!bad.length) $("kwPaste").value = "";
+    });
+    $("kwExport").addEventListener("click", () => {
+      $("kwPaste").value = kwCurrent().filter(k => k.term && k.matches.length).map(k => k.term + " = " + k.matches.join(", ")).join("\n");
+      $("kwPaste").focus(); $("kwPaste").select();
+    });
+    $("kwAdd").addEventListener("click", () => { const r = kwRow("", []); $("kwRows").appendChild(r); r.children[0].focus(); });
+    $("kwSave").addEventListener("click", async () => {
+      const keywords = kwCurrent();
       const incomplete = keywords.filter(k => !k.term || !k.matches.length);
       if (incomplete.length) { $("kwMsg").textContent = "Each row needs both a search word and a colorway."; return; }
       $("kwSave").disabled = true; $("kwMsg").textContent = "Saving…";
