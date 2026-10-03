@@ -1401,7 +1401,16 @@
           return;
         }
 
-        const data = await res.json();
+        const raw = await res.text();
+        let data;
+        try {
+          data = JSON.parse(raw);
+        } catch {
+          // Got a web page back instead of search results: the search worker isn't connected at this address.
+          console.error("Search endpoint " + SEARCH_ENDPOINT + " returned non-JSON (is the worker routed?):", raw.slice(0, 200));
+          statusEl.textContent = "Search isn't available right now. Please try again later.";
+          return;
+        }
         const items = (data.objects || []).filter(o => o.type === "ITEM");
 
         if (!items.length) {
