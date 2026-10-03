@@ -666,7 +666,42 @@
       display: flex; flex-direction: column; gap: 14px;
       animation: slideIn .2s ease;
     }
+    .cart-panel { max-height: calc(100vh - 90px); overflow-y: auto; }
     .cart-hidden { display: none; }
+    .ship-box[hidden] { display: none; }
+    .ship-box { border-top: 1px solid var(--border-light); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .ship-label { font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+    .ship-form { display: flex; gap: 8px; }
+    .ship-form input {
+      flex: 1; min-width: 0; padding: 9px 12px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border); font-family: var(--font-body); font-size: 14px; background: var(--bg);
+    }
+    .ship-form input:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(27,42,74,.1); background: #fff; }
+    .ship-form button {
+      padding: 9px 14px; border: 0; border-radius: var(--radius-sm); background: var(--ink); color: #fff;
+      font-weight: 700; font-size: 13px; font-family: var(--font-body); cursor: pointer;
+    }
+    .ship-form button:disabled { opacity: .5; cursor: not-allowed; }
+    .ship-rates { display: flex; flex-direction: column; gap: 6px; }
+    .ship-rates:empty { display: none; }
+    .ship-opt {
+      display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; font-size: 14px;
+    }
+    .ship-opt:has(input:checked) { border-color: var(--navy); background: var(--navy-light); }
+    .ship-opt input { accent-color: var(--navy); margin: 0; }
+    .ship-opt .svc { flex: 1; font-weight: 600; }
+    .ship-opt .eta { font-size: 12px; color: var(--muted); font-weight: 500; display: block; }
+    .ship-opt .price { font-weight: 800; font-variant-numeric: tabular-nums; }
+    .cart-line .sub-amount { font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; }
+    .cart-grand { border-top: 1px solid var(--border); padding-top: 10px; }
+    .order-banner {
+      position: fixed; left: 50%; top: 80px; transform: translateX(-50%); z-index: 70;
+      background: var(--navy); color: #fff; padding: 14px 18px; border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-lg); display: flex; gap: 14px; align-items: center; max-width: calc(100vw - 32px);
+      font-size: 14px; font-weight: 600;
+    }
+    .order-banner button { background: transparent; border: 0; color: #fff; font-size: 16px; cursor: pointer; }
     .cart-header {
       display: flex; justify-content: space-between; align-items: center;
       padding-bottom: 12px; border-bottom: 1px solid var(--border);
@@ -1141,6 +1176,23 @@
       <div class="label">Subtotal</div>
       <div class="amount" id="cartSubtotal">$0.00</div>
     </div>
+    <div class="ship-box" id="shipBox">
+      <label class="ship-label" for="shipZip">Shipping (UPS)</label>
+      <form class="ship-form" id="shipForm" autocomplete="off">
+        <input id="shipZip" type="text" inputmode="numeric" maxlength="10" placeholder="ZIP code" aria-label="ZIP code">
+        <button type="submit" id="shipGo">Get rates</button>
+      </form>
+      <div id="shipRates" class="ship-rates" role="radiogroup" aria-label="Shipping options"></div>
+      <div id="shipStatus" class="small-muted"></div>
+    </div>
+    <div class="cart-totals cart-line">
+      <div class="label">Shipping</div>
+      <div class="sub-amount" id="cartShipping">—</div>
+    </div>
+    <div class="cart-totals cart-grand">
+      <div class="label">Total</div>
+      <div class="amount" id="cartTotal">$0.00</div>
+    </div>
     <div class="cart-actions">
       <button id="checkoutBtn" class="checkout-btn">Checkout</button>
       <button id="clearCartBtn" class="clear-btn">Clear</button>
@@ -1256,6 +1308,96 @@
       }[c]));
     }
 
+    // ===== SHIPPING (UPS) =====
+    const SHIPPING_ENDPOINT = API_BASE + "/shipping-rates";
+    let shipQuote = null; // { zip, sig, rates, selected }
+
+    function cartSignature(){
+      return getCart().map(i => i.variationId + "x" + i.qty).sort().join(",");
+    }
+
+    function selectedRate(){
+      if (!shipQuote || shipQuote.sig !== cartSignature()) return null;
+      return shipQuote.rates.find(r => r.service_code === shipQuote.selected) || null;
+    }
+
+    function renderShipping(){
+      const ratesEl = document.getElementById("shipRates");
+      const shipEl = document.getElementById("cartShipping");
+      const totalEl = document.getElementById("cartTotal");
+      const statusEl = document.getElementById("shipStatus");
+      const hasItems = getCart().length > 0;
+      document.getElementById("shipBox").hidden = !hasItems;
+
+      if (shipQuote && shipQuote.sig !== cartSignature()) {
+        shipQuote = null;
+        ratesEl.innerHTML = "";
+        if (hasItems) statusEl.textContent = "Your cart changed. Get rates again.";
+      }
+
+      if (shipQuote && !ratesEl.children.length) {
+        ratesEl.innerHTML = shipQuote.rates.map(r =>
+          '<label class="ship-opt">' +
+            '<input type="radio" name="shipOpt" value="' + escapeHtml(r.service_code) + '"' + (r.service_code === shipQuote.selected ? " checked" : "") + '>' +
+            '<span class="svc">' + escapeHtml(r.service) +
+              (r.business_days ? '<span class="eta">' + r.business_days + (r.business_days === 1 ? " business day" : " business days") + '</span>' : "") +
+            '</span>' +
+            '<span class="price">' + formatMoney(r.amount) + '</span>' +
+          '</label>').join("");
+        ratesEl.querySelectorAll("input[name=shipOpt]").forEach(inp => {
+          inp.addEventListener("change", () => { shipQuote.selected = inp.value; renderShipping(); });
+        });
+      }
+
+      const rate = selectedRate();
+      shipEl.textContent = rate ? formatMoney(rate.amount) : "—";
+      totalEl.textContent = formatMoney(cartSubtotal() + (rate ? rate.amount : 0));
+      document.getElementById("checkoutBtn").disabled = !hasItems || !rate;
+    }
+
+    async function getShippingRates(e){
+      if (e) e.preventDefault();
+      const zip = document.getElementById("shipZip").value.trim();
+      const statusEl = document.getElementById("shipStatus");
+      const btn = document.getElementById("shipGo");
+      if (!/^\d{5}(-\d{4})?$/.test(zip)) { statusEl.textContent = "Enter a 5-digit US ZIP code."; return; }
+      const cart = getCart();
+      if (!cart.length) return;
+
+      btn.disabled = true;
+      statusEl.textContent = "Getting UPS rates…";
+      document.getElementById("shipRates").innerHTML = "";
+      shipQuote = null;
+      try {
+        const res = await fetch(SHIPPING_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            address: { postal_code: zip, country: "US" },
+            items: cart.map(i => ({ variation_id: i.variationId, qty: Number(i.qty || 1) }))
+          })
+        });
+        let data = null;
+        try { data = await res.json(); } catch { /* not JSON */ }
+        if (!res.ok || !data || !Array.isArray(data.rates)) {
+          console.error("shipping rates failed:", res.status, data);
+          statusEl.textContent = (data && data.error) || "Couldn't get shipping rates. Please try again.";
+          return;
+        }
+        if (!data.rates.length) { statusEl.textContent = "UPS has no options for that ZIP code."; return; }
+        shipQuote = { zip: zip, sig: cartSignature(), rates: data.rates, selected: data.rates[0].service_code };
+        statusEl.textContent = "Estimated package weight: " + data.weight_lb + " lb";
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "Couldn't get shipping rates. Please try again.";
+      } finally {
+        btn.disabled = false;
+        renderShipping();
+      }
+    }
+
+    document.getElementById("shipForm").addEventListener("submit", getShippingRates);
+
     function updateCartUI(){
       const countEl = document.getElementById("cartCount");
       const itemsEl = document.getElementById("cartItemsContainer");
@@ -1271,6 +1413,7 @@
       if (!cart.length){
         itemsEl.innerHTML = '<div class="small-muted">Your cart is empty.</div>';
         checkoutBtn.disabled = true;
+        renderShipping();
         return;
       }
 
@@ -1300,7 +1443,7 @@
         btn.addEventListener("click", () => removeFromCart(btn.getAttribute("data-remove")));
       });
 
-      checkoutBtn.disabled = false;
+      renderShipping();
     }
 
     // Cart panel toggles
@@ -1326,13 +1469,21 @@
       checkoutBtn.disabled = true;
       status.textContent = "Preparing checkout…";
 
+      const rate = selectedRate();
+      if (!rate) {
+        status.textContent = "Enter your ZIP code and choose a shipping option first.";
+        checkoutBtn.disabled = false;
+        renderShipping();
+        return;
+      }
+
       const payload = {
         items: cart.map(i => ({
           variation_id: i.variationId,
-          qty: Number(i.qty || 1),
-          name: i.name,
-          price: Number(i.price || 0)
-        }))
+          qty: Number(i.qty || 1)
+        })),
+        shipping: { service_code: rate.service_code, postal_code: shipQuote.zip },
+        return_url: window.location.origin + window.location.pathname
       };
 
       try {
@@ -1348,14 +1499,14 @@
 
         if (!res.ok) {
           console.error("checkout error:", res.status, text);
-          status.textContent = "Checkout failed: " + res.status;
+          status.textContent = (data && data.error) || "Checkout failed. Please try again.";
           checkoutBtn.disabled = false;
           return;
         }
 
         const checkoutUrl = data && data.checkoutUrl;
         if (!checkoutUrl) {
-          status.textContent = "Checkout endpoint did not return checkoutUrl.";
+          status.textContent = "Checkout failed. Please try again.";
           console.error("checkout response:", text);
           checkoutBtn.disabled = false;
           return;
@@ -1365,7 +1516,7 @@
 
       } catch (e) {
         console.error("checkout failed:", e);
-        status.textContent = "Checkout failed. Check console.";
+        status.textContent = "Checkout failed. Please check your connection and try again.";
         checkoutBtn.disabled = false;
       }
     }
@@ -1501,6 +1652,23 @@
         searchBtn.textContent = "Search";
       }
     });
+
+    // Back from Square after paying: clear the cart and say thanks.
+    (function handleOrderReturn(){
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("order") !== "complete") return;
+      clearCart();
+      params.delete("order");
+      const qs = params.toString();
+      history.replaceState(null, "", window.location.pathname + (qs ? "?" + qs : "") + window.location.hash);
+      const banner = document.createElement("div");
+      banner.className = "order-banner";
+      banner.setAttribute("role", "status");
+      banner.innerHTML = '<span>Thanks for your order! A receipt from Square is on its way to your email.</span><button type="button" aria-label="Dismiss">✕</button>';
+      banner.querySelector("button").addEventListener("click", () => banner.remove());
+      document.body.appendChild(banner);
+      setTimeout(() => banner.remove(), 12000);
+    })();
 
     // Init cart UI on load
     updateCartUI();
