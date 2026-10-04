@@ -827,7 +827,7 @@
       <div class="nav-links">
         <a href="#shop">Shop</a>
         <a href="#categories">Categories</a>
-        <a href="#collections">Collections</a>
+        <a href="#collections" data-needs="collections" hidden>Collections</a>
         <a href="#about">About</a>
         <span class="cart-btn-wrap">
           <button id="openCartBtn" class="cart-btn">
@@ -858,7 +858,7 @@
         </p>
         <div class="hero-cta">
           <a href="#shop" class="btn-primary">Shop Now →</a>
-          <a href="#collections" class="btn-outline">View Collections</a>
+          <a href="#collections" class="btn-outline" data-needs="collections" hidden>View Collections</a>
         </div>
       </div>
 
@@ -985,7 +985,7 @@
   </div>
 
   <!-- ── COLLECTIONS ── -->
-  <div class="section section-sm" id="collections">
+  <div class="section section-sm" id="collections" hidden>
     <div class="section-header">
       <h2>Shop by Collection</h2>
       <p>Our four signature lines, each released in curated colorways.</p>
@@ -1121,10 +1121,10 @@
         <div class="footer-col">
           <h5>Shop</h5>
           <a href="#shop" data-q="">Browse All</a>
-          <a href="#shop" data-q="classic">Classic</a>
-          <a href="#shop" data-q="anchor">Anchor</a>
-          <a href="#shop" data-q="helm">Helm</a>
-          <a href="#shop" data-q="college color">College Color Series</a>
+          <a href="#shop" data-q="classic" class="coll-link" hidden>Classic</a>
+          <a href="#shop" data-q="anchor" class="coll-link" hidden>Anchor</a>
+          <a href="#shop" data-q="helm" class="coll-link" hidden>Helm</a>
+          <a href="#shop" data-q="college color" class="coll-link" hidden>College Color Series</a>
         </div>
         <div class="footer-col">
           <h5>Company</h5>
@@ -1654,33 +1654,51 @@
     })();
 
     // ===== COMING SOON: categories and collections with no items yet =====
-    // Each card asks the shop whether it has anything; empty ones show "Coming soon"
-    // and stop being clickable. They switch back on by themselves once items exist.
-    (function markEmptyCategories() {
-      document.querySelectorAll(".type-card[data-q], .cat-tile[data-q]").forEach(async el => {
-        const q = el.dataset.q;
+    // Each category card and collection tile asks the shop whether it has anything.
+    // Empty category cards show "Coming soon" and aren't clickable. The whole
+    // Shop by Collection section (and the links to it) stays hidden until at least
+    // one collection has items. Everything switches on by itself as items are added.
+    (async function checkAvailability() {
+      const els = [...document.querySelectorAll(".type-card[data-q], .cat-tile[data-q], .coll-link[data-q]")];
+      const queries = [...new Set(els.map(el => el.dataset.q))];
+      const counts = {};
+      await Promise.all(queries.map(async q => {
         try {
           const res = await fetch(SEARCH_ENDPOINT + "?q=" + encodeURIComponent(q));
-          if (!res.ok) return;
+          if (!res.ok) { counts[q] = null; return; }
           const data = await res.json();
-          const count = (data.objects || []).filter(o => o.type === "ITEM").length;
-          if (count > 0) return;
-          el.classList.add("soon");
-          el.dataset.qOff = q;
-          el.removeAttribute("data-q");
-          el.setAttribute("aria-disabled", "true");
-          const cta = el.querySelector(".type-cta");
-          if (cta) cta.textContent = "Coming soon";
-          if (el.classList.contains("cat-tile")) {
-            const note = document.createElement("span");
-            note.className = "soon-note";
-            note.textContent = "Coming soon";
-            el.appendChild(note);
-          }
-          const name = el.querySelector(".type-name, .cat-label");
-          el.setAttribute("aria-label", (name ? name.textContent.replace(/\u00ad|\u2011/g, "") : q) + ", coming soon");
-        } catch (e) { /* leave the card active if the check fails */ }
-      });
+          counts[q] = (data.objects || []).filter(o => o.type === "ITEM").length;
+        } catch (e) { counts[q] = null; }   // unknown: treat as available
+      }));
+      const empty = q => counts[q] === 0;
+
+      function markSoon(el, q) {
+        el.classList.add("soon");
+        el.dataset.qOff = q;
+        el.removeAttribute("data-q");
+        el.setAttribute("aria-disabled", "true");
+        const cta = el.querySelector(".type-cta");
+        if (cta) cta.textContent = "Coming soon";
+        if (el.classList.contains("cat-tile")) {
+          const note = document.createElement("span");
+          note.className = "soon-note";
+          note.textContent = "Coming soon";
+          el.appendChild(note);
+        }
+        const name = el.querySelector(".type-name, .cat-label");
+        el.setAttribute("aria-label", (name ? name.textContent.replace(/\u00ad|\u2011/g, "") : q) + ", coming soon");
+      }
+
+      document.querySelectorAll(".type-card[data-q]").forEach(el => { if (empty(el.dataset.q)) markSoon(el, el.dataset.q); });
+
+      const tiles = [...document.querySelectorAll(".cat-tile[data-q]")];
+      const anyCollection = tiles.some(el => !empty(el.dataset.q));
+      if (anyCollection) {
+        tiles.forEach(el => { if (empty(el.dataset.q)) markSoon(el, el.dataset.q); });
+        document.getElementById("collections").hidden = false;
+        document.querySelectorAll('[data-needs="collections"]').forEach(el => { el.hidden = false; });
+      }
+      document.querySelectorAll(".coll-link[data-q]").forEach(el => { el.hidden = empty(el.dataset.q); });
     })();
 
     // ===== POPULAR PICKS (real items from the shop) =====
