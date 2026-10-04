@@ -259,6 +259,28 @@
     .search-form button:hover { background: #000; transform: translateY(-1px); }
     .search-form button:disabled { opacity: .5; cursor: not-allowed; transform: none; }
     .search-status { font-size: 13px; color: var(--muted); min-height: 20px; }
+    .search-form input { min-width: 0; }
+    @media (max-width: 560px) {
+      .search-section { padding: 22px 18px; }
+      .search-form button { padding: 14px 16px; }
+    }
+    .search-tip {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: var(--gold-light); border: 1px solid #efe3bf; border-radius: var(--radius-sm);
+      padding: 12px 14px; margin: 4px 0 12px; color: var(--ink-soft); font-size: 14px; line-height: 1.5;
+    }
+    .search-tip > .ico { color: var(--gold-dark); margin-top: 2px; }
+    .search-tip p { margin: 0 0 8px; }
+    .search-tip strong { color: var(--navy); }
+    .tip-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .tip-chips span { font-size: 12px; font-weight: 700; color: var(--muted); margin-right: 2px; }
+    .tip-chip {
+      font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+      background: var(--white); color: var(--navy); border: 1px solid var(--border);
+      border-radius: 100px; padding: 4px 12px; transition: border-color .2s, background .2s;
+    }
+    .tip-chip:hover { border-color: var(--navy); background: var(--navy-light); }
+    .tip-chip:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 
     /* ── RESULTS GRID ── */
     .results-grid {
@@ -838,6 +860,19 @@
               <input id="q" type="search" placeholder='Try "hoodie", "anchor" or "carolina blue"' />
               <button id="go" type="submit">Search</button>
             </form>
+            <div class="search-tip">
+              <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3v18"/><path d="M4 4l16 5-16 5"/></svg>
+              <div>
+                <p><strong>Shopping for team colors?</strong> Type your team's name, nickname or city, or its colors, and we'll show the College Color Series pieces in matching colorways.</p>
+                <div class="tip-chips" aria-label="Try a colorway">
+                  <span>Try:</span>
+                  <button type="button" class="tip-chip" data-q="carolina blue">Carolina Blue</button>
+                  <button type="button" class="tip-chip" data-q="black gold">Black &amp; Gold</button>
+                  <button type="button" class="tip-chip" data-q="orange navy">Orange &amp; Navy</button>
+                  <button type="button" class="tip-chip" data-q="garnet gold">Garnet &amp; Gold</button>
+                </div>
+              </div>
+            </div>
             <div id="search-status" class="search-status"></div>
             <div id="results" class="results-grid"></div>
           </div>
