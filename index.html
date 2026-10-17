@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>cKool n saSSii — Original Designs. Wear the Wave.</title>
-  <meta name="description" content="cKool n saSSii — Original nautical-inspired designs. Classic, Anchor, and Helm collections in curated College Color Series colorways. Not affiliated with any team." />
+  <meta name="description" content="cKool n saSSii: original apparel in the Nautical line (Classic, Anchor, Helm) and the Be Strong series (Bear, Eagle, Gorilla, Lion, Wolf), in curated colorways. Not affiliated with any team." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -359,6 +359,30 @@
 
     @media(max-width: 700px) {
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .style-group + .style-group { margin-top: 40px; }
+    .style-group-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-bottom: 16px; }
+    .style-group-head h3 { font-family: var(--font-display); font-size: 24px; color: var(--navy); }
+    .style-group-head p { color: var(--muted); font-size: 14px; flex: 1 1 260px; }
+    .style-group-all {
+      font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+      background: var(--navy); color: #fff; border: 0; border-radius: 100px; padding: 7px 14px;
+    }
+    .style-group-all:hover { background: var(--navy-dark); }
+    .style-group-all:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+    .style-group-strong .cat-icon { background: var(--gold-light); color: var(--navy); }
+    .style-group-strong .cat-tile:hover .cat-icon { background: var(--navy); color: var(--gold); }
+    .style-group[data-group="nautical"] .cat-grid { grid-template-columns: repeat(3, 1fr); }
+    .style-group[data-group="strong"] .cat-grid { grid-template-columns: repeat(5, 1fr); }
+    @media(max-width: 900px) {
+      .style-group[data-group="strong"] .cat-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media(max-width: 560px) {
+      .style-group .cat-grid,
+      .style-group[data-group="nautical"] .cat-grid,
+      .style-group[data-group="strong"] .cat-grid { grid-template-columns: repeat(2, 1fr); }
+      .style-group[data-group="nautical"] .cat-tile:last-child,
+      .style-group[data-group="strong"] .cat-tile:last-child { grid-column: 1 / -1; }
     }
 
     /* ── SHOP BY CATEGORY (product-type cards) ── */
@@ -827,7 +851,7 @@
       <div class="nav-links">
         <a href="#shop">Shop</a>
         <a href="#categories">Categories</a>
-        <a href="#collections" data-needs="collections" hidden>Collections</a>
+        <a href="#collections" data-needs="collections" hidden>Styles</a>
         <a href="#about">About</a>
         <span class="cart-btn-wrap">
           <button id="openCartBtn" class="cart-btn">
@@ -841,8 +865,8 @@
   <!-- ── PERKS STRIP ── -->
   <div class="perks-bar" aria-label="Store highlights">
     <div class="perks-scroll">
-      <div class="perks-set"><div class="perk-item">Original nautical designs</div><div class="perk-item">College Color Series available</div><div class="perk-item">Ships UPS Ground with tracking</div><div class="perk-item">Classic · Anchor · Helm · College Color</div></div>
-      <div class="perks-set" aria-hidden="true"><div class="perk-item">Original nautical designs</div><div class="perk-item">College Color Series available</div><div class="perk-item">Ships UPS Ground with tracking</div><div class="perk-item">Classic · Anchor · Helm · College Color</div></div>
+      <div class="perks-set"><div class="perk-item">Original nautical designs</div><div class="perk-item">College Color Series available</div><div class="perk-item">Ships UPS Ground with tracking</div><div class="perk-item">Be Strong: Bear · Eagle · Gorilla · Lion · Wolf</div></div>
+      <div class="perks-set" aria-hidden="true"><div class="perk-item">Original nautical designs</div><div class="perk-item">College Color Series available</div><div class="perk-item">Ships UPS Ground with tracking</div><div class="perk-item">Be Strong: Bear · Eagle · Gorilla · Lion · Wolf</div></div>
     </div>
   </div>
 
@@ -858,7 +882,7 @@
         </p>
         <div class="hero-cta">
           <a href="#shop" class="btn-primary">Shop Now →</a>
-          <a href="#collections" class="btn-outline" data-needs="collections" hidden>View Collections</a>
+          <a href="#collections" class="btn-outline" data-needs="collections" hidden>View Styles</a>
         </div>
       </div>
 
@@ -867,9 +891,9 @@
         <div id="shop">
           <div class="search-section">
             <h2>Search</h2>
-            <p class="search-subtitle">Search by product, collection or colorway, or leave it blank and press Search to see everything.</p>
+            <p class="search-subtitle">Search by product, style or colorway, or leave it blank and press Search to see everything.</p>
             <form id="ck-search" class="search-form" autocomplete="off">
-              <input id="q" type="search" placeholder='Try "hoodie", "anchor" or "carolina blue"' />
+              <input id="q" type="search" placeholder='Try "hoodie", "wolf" or "carolina blue"' />
               <button id="go" type="submit">Search</button>
             </form>
             <div class="search-tip">
@@ -984,29 +1008,60 @@
     </div>
   </div>
 
-  <!-- ── COLLECTIONS ── -->
+  <!-- ── STYLES ── -->
   <div class="section section-sm" id="collections" hidden>
     <div class="section-header">
-      <h2>Shop by Collection</h2>
-      <p>Our four signature lines, each released in curated colorways.</p>
+      <h2>Shop by Style</h2>
+      <p>Eight original designs in two lines, each released in curated colorways.</p>
     </div>
-    <div class="cat-grid">
-      <button class="cat-tile" data-q="classic">
-        <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></span>
-        <span class="cat-label">Classic</span>
-      </button>
-      <button class="cat-tile" data-q="anchor">
-        <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><path d="M12 7v14"/><path d="M8 11h8"/><path d="M5 14a7 7 0 0 0 14 0"/><path d="M5 14l-2 1.5M19 14l2 1.5"/></svg></span>
-        <span class="cat-label">Anchor</span>
-      </button>
-      <button class="cat-tile" data-q="helm">
-        <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="1.6"/><path d="M12 2.5v3.5M12 18v3.5M2.5 12H6M18 12h3.5M5.3 5.3l2.5 2.5M16.2 16.2l2.5 2.5M5.3 18.7l2.5-2.5M16.2 7.8l2.5-2.5"/></svg></span>
-        <span class="cat-label">Helm</span>
-      </button>
-      <button class="cat-tile" data-q="college color">
-        <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3v18"/><path d="M4 4l16 5-16 5"/><path d="M8 7.5v3.5"/></svg></span>
-        <span class="cat-label">College Color Series</span>
-      </button>
+    <div class="style-group" data-group="nautical">
+      <div class="style-group-head">
+        <h3>Nautical</h3>
+        <p>Where it started: classic marks from the water.</p>
+      </div>
+      <div class="cat-grid">
+        <button class="cat-tile" data-q="classic">
+          <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></span>
+          <span class="cat-label">Classic</span>
+        </button>
+        <button class="cat-tile" data-q="anchor">
+          <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><path d="M12 7v14"/><path d="M8 11h8"/><path d="M5 14a7 7 0 0 0 14 0"/><path d="M5 14l-2 1.5M19 14l2 1.5"/></svg></span>
+          <span class="cat-label">Anchor</span>
+        </button>
+        <button class="cat-tile" data-q="helm">
+          <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="1.6"/><path d="M12 2.5v3.5M12 18v3.5M2.5 12H6M18 12h3.5M5.3 5.3l2.5 2.5M16.2 16.2l2.5 2.5M5.3 18.7l2.5-2.5M16.2 7.8l2.5-2.5"/></svg></span>
+          <span class="cat-label">Helm</span>
+        </button>
+      </div>
+    </div>
+    <div class="style-group style-group-strong" data-group="strong">
+      <div class="style-group-head">
+        <h3>Be Strong</h3>
+        <p>Five animals, one message. Wear the strength you carry.</p>
+        <button type="button" class="style-group-all" data-q="be strong">Shop all Be Strong →</button>
+      </div>
+      <div class="cat-grid">
+        <button class="cat-tile" data-q="bear">
+          <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.4 9.6 L5.2 9.5 L5.1 9.4 L4.9 9.3 L4.8 9.2 L4.7 9.1 L4.5 8.9 L4.4 8.8 L4.3 8.6 L4.2 8.5 L4.1 8.3 L4.1 8.1 L4.0 7.9 L4.0 7.8 L3.9 7.6 L3.9 7.4 L3.9 7.2 L3.9 7.0 L3.9 6.8 L4.0 6.6 L4.0 6.5 L4.1 6.3 L4.1 6.1 L4.2 5.9 L4.3 5.8 L4.4 5.6 L4.5 5.5 L4.7 5.3 L4.8 5.2 L4.9 5.1 L5.1 5.0 L5.2 4.9 L5.4 4.8 L5.6 4.7 L5.8 4.6 L5.9 4.6 L6.1 4.5 L6.3 4.5 L6.5 4.5 L6.7 4.5 L6.9 4.5 L7.1 4.5 L7.3 4.6 L7.4 4.6 L7.6 4.7 L7.8 4.8 L8.0 4.9 L8.1 5.0 L8.3 5.1 L8.4 5.2 L8.5 5.3 L8.7 5.5 L8.8 5.6 L8.9 5.8 L9.0 5.9 L9.1 6.1 L9.1 6.3"/><path d="M14.9 6.3 L14.9 6.1 L15.0 5.9 L15.1 5.8 L15.2 5.6 L15.3 5.5 L15.5 5.3 L15.6 5.2 L15.7 5.1 L15.9 5.0 L16.0 4.9 L16.2 4.8 L16.4 4.7 L16.6 4.6 L16.7 4.6 L16.9 4.5 L17.1 4.5 L17.3 4.5 L17.5 4.5 L17.7 4.5 L17.9 4.5 L18.1 4.6 L18.2 4.6 L18.4 4.7 L18.6 4.8 L18.8 4.9 L18.9 5.0 L19.1 5.1 L19.2 5.2 L19.3 5.3 L19.5 5.5 L19.6 5.6 L19.7 5.8 L19.8 5.9 L19.9 6.1 L19.9 6.3 L20.0 6.5 L20.0 6.6 L20.1 6.8 L20.1 7.0 L20.1 7.2 L20.1 7.2 L20.1 7.4 L20.1 7.6 L20.0 7.8 L20.0 7.9 L19.9 8.1 L19.9 8.3 L19.8 8.5 L19.7 8.6 L19.6 8.8 L19.5 8.9 L19.3 9.1 L19.2 9.2 L19.1 9.3 L18.9 9.4 L18.8 9.5 L18.6 9.6"/><circle cx="12" cy="13.2" r="7.2"/><ellipse cx="12" cy="16" rx="3.2" ry="2.4"/><circle cx="9.2" cy="11.4" r="0.9" fill="currentColor" stroke="none"/><circle cx="14.8" cy="11.4" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="15.2" r="1.1" fill="currentColor" stroke="none"/></svg></span>
+          <span class="cat-label">Bear</span>
+        </button>
+        <button class="cat-tile" data-q="eagle">
+          <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 21c-.9-6.6.2-12.6 4.6-15.6 2.6-1.8 6.2-1.5 8 .9.9 1.2 1.4 2.7 1.3 4-.7-.7-1.6-1-2.6-.8l-2.4.8c-.4 3.5.3 7.3 1.8 10.7"/><path d="M11.6 7.4l3.6.4"/><circle cx="14.1" cy="8.9" r="0.85" fill="currentColor" stroke="none"/><path d="M8.4 14.5c.9.6 1.9.9 3 .9M7.9 17.8c1 .5 2.1.8 3.3.8"/></svg></span>
+          <span class="cat-label">Eagle</span>
+        </button>
+        <button class="cat-tile" data-q="gorilla">
+          <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.2 8.8C6.2 4.6 9 3 12 3s5.8 1.6 5.8 5.8c1.8.9 2.4 3.5 1.2 5.6C18.4 19 15.6 21 12 21s-6.4-2-7-6.6c-1.2-2.1-.6-4.7 1.2-5.6z"/><path d="M7.6 10.2c1.4-1.5 3.3-1.6 4.4-.5 1.1-1.1 3-1 4.4.5"/><path d="M8.6 14.6c.6-1.4 2-2 3.4-2s2.8.6 3.4 2c.4 1-.2 2.9-1.4 3.5-1.3.7-2.7.7-4 0-1.2-.6-1.8-2.5-1.4-3.5z"/><circle cx="9.8" cy="11.7" r="0.8" fill="currentColor" stroke="none"/><circle cx="14.2" cy="11.7" r="0.8" fill="currentColor" stroke="none"/><circle cx="11" cy="14.3" r="0.55" fill="currentColor" stroke="none"/><circle cx="13" cy="14.3" r="0.55" fill="currentColor" stroke="none"/><path d="M10.6 16.6c.9.5 1.9.5 2.8 0"/></svg></span>
+          <span class="cat-label">Gorilla</span>
+        </button>
+        <button class="cat-tile" data-q="lion">
+          <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.2 12.0 L21.6 12.5 L21.9 13.0 L22.0 13.6 L21.8 14.1 L21.5 14.5 L21.0 14.9 L20.5 15.2 L19.9 15.5 L19.5 15.8 L19.2 16.1 L19.0 16.6 L19.0 17.1 L19.0 17.7 L19.0 18.3 L19.0 19.0 L18.7 19.5 L18.3 19.8 L17.8 20.0 L17.2 20.1 L16.6 20.0 L16.0 19.8 L15.4 19.7 L15.0 19.8 L14.6 19.9 L14.2 20.3 L13.9 20.7 L13.5 21.2 L13.0 21.7 L12.5 22.0 L12.0 22.1 L11.5 22.0 L11.0 21.7 L10.5 21.2 L10.1 20.7 L9.8 20.3 L9.4 19.9 L9.0 19.8 L8.6 19.7 L8.0 19.8 L7.4 20.0 L6.8 20.1 L6.2 20.0 L5.7 19.8 L5.3 19.5 L5.0 19.0 L5.0 18.3 L5.0 17.7 L5.0 17.1 L5.0 16.6 L4.8 16.1 L4.5 15.8 L4.1 15.5 L3.5 15.2 L3.0 14.9 L2.5 14.5 L2.2 14.1 L2.0 13.6 L2.1 13.0 L2.4 12.5 L2.8 12.0 L3.2 11.5 L3.6 11.1 L3.8 10.7 L3.8 10.3 L3.7 9.8 L3.5 9.2 L3.3 8.7 L3.1 8.0 L3.1 7.5 L3.3 7.0 L3.6 6.6 L4.1 6.3 L4.7 6.1 L5.4 6.0 L5.9 5.9 L6.4 5.8 L6.8 5.5 L7.0 5.1 L7.2 4.6 L7.4 4.0 L7.6 3.4 L8.0 2.9 L8.4 2.6 L8.9 2.4 L9.5 2.5 L10.0 2.7 L10.6 3.1 L11.1 3.4 L11.6 3.6 L12.0 3.7 L12.4 3.6 L12.9 3.4 L13.4 3.1 L14.0 2.7 L14.5 2.5 L15.1 2.4 L15.6 2.6 L16.0 2.9 L16.4 3.4 L16.6 4.0 L16.8 4.6 L17.0 5.1 L17.2 5.5 L17.6 5.8 L18.1 5.9 L18.6 6.0 L19.3 6.1 L19.9 6.3 L20.4 6.6 L20.7 7.0 L20.9 7.5 L20.9 8.0 L20.7 8.7 L20.5 9.2 L20.3 9.8 L20.2 10.3 L20.2 10.7 L20.4 11.1 L20.8 11.5Z"/><circle cx="12" cy="12.4" r="5.4"/><circle cx="10" cy="11.3" r="0.8" fill="currentColor" stroke="none"/><circle cx="14" cy="11.3" r="0.8" fill="currentColor" stroke="none"/><path d="M11 14.2h2l-1 1.2z" fill="currentColor"/><path d="M12 15.4v1.1M10.6 16.8c.7.5 2.1.5 2.8 0"/></svg></span>
+          <span class="cat-label">Lion</span>
+        </button>
+        <button class="cat-tile" data-q="wolf">
+          <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3l4 5.5h6L19 3l.7 8.5-3.4 5.3L12 21l-4.3-4.2L4.3 11.5z"/><path d="M9.5 15.5L12 18l2.5-2.5"/><circle cx="9.4" cy="11.6" r="0.9" fill="currentColor" stroke="none"/><circle cx="14.6" cy="11.6" r="0.9" fill="currentColor" stroke="none"/><path d="M11 15.2h2l-1 1.1z" fill="currentColor"/></svg></span>
+          <span class="cat-label">Wolf</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1033,8 +1088,8 @@
       </div>
       <div class="value-card">
         <div class="value-icon"><svg class="ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></div>
-        <h4>Nautical Heritage</h4>
-        <p>Anchors, helms, and classic maritime motifs reimagined for modern streetwear and everyday style.</p>
+        <h4>Nautical Roots. Be Strong.</h4>
+        <p>Anchors and helms from the water, plus our Be Strong animals: bear, eagle, gorilla, lion and wolf.</p>
       </div>
       <div class="value-card">
         <div class="value-icon"><svg class="ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/><path d="M22 9v6"/></svg></div>
@@ -1059,7 +1114,7 @@
       <div class="how-step">
         <div class="how-num">1</div>
         <h4>Search &amp; Browse</h4>
-        <p>Search by product, collection or colorway, or tap a category card to see everything in it.</p>
+        <p>Search by product, style or colorway, or tap a category card to see everything in it.</p>
       </div>
       <div class="how-step">
         <div class="how-num">2</div>
@@ -1083,8 +1138,8 @@
           <div class="label">Original designs, every piece</div>
         </div>
         <div class="about-stat">
-          <div class="num">4</div>
-          <div class="label">Signature collections</div>
+          <div class="num">8</div>
+          <div class="label">Original styles</div>
         </div>
 
       </div>
@@ -1106,7 +1161,7 @@
     <div class="cta-banner">
       <h2>Ready to wear something original?</h2>
       <p>Browse our collections and find your style. Every design is ours — crafted with care.</p>
-      <a href="#shop" class="btn-primary">Shop Collections →</a>
+      <a href="#shop" class="btn-primary" data-q="">Shop Everything →</a>
     </div>
   </div>
 
@@ -1116,7 +1171,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="nav-logo">cKool n <span>saSSii</span></div>
-          <p>Original nautical-inspired designs. Classic, Anchor, Helm and College Color Series, released in curated colorways.</p>
+          <p>Original designs: the Nautical line (Classic, Anchor, Helm) and the Be Strong series, released in curated colorways.</p>
         </div>
         <div class="footer-col">
           <h5>Shop</h5>
@@ -1124,6 +1179,7 @@
           <a href="#shop" data-q="classic" class="coll-link" hidden>Classic</a>
           <a href="#shop" data-q="anchor" class="coll-link" hidden>Anchor</a>
           <a href="#shop" data-q="helm" class="coll-link" hidden>Helm</a>
+          <a href="#shop" data-q="be strong" class="coll-link" hidden>Be Strong Series</a>
           <a href="#shop" data-q="college color" class="coll-link" hidden>College Color Series</a>
         </div>
         <div class="footer-col">
@@ -1660,6 +1716,7 @@
     // one collection has items. Everything switches on by itself as items are added.
     (async function checkAvailability() {
       const els = [...document.querySelectorAll(".type-card[data-q], .cat-tile[data-q], .coll-link[data-q]")];
+      // (the "Shop all Be Strong" button is covered by the five animal tiles)
       const queries = [...new Set(els.map(el => el.dataset.q))];
       const counts = {};
       await Promise.all(queries.map(async q => {
@@ -1694,7 +1751,13 @@
       const tiles = [...document.querySelectorAll(".cat-tile[data-q]")];
       const anyCollection = tiles.some(el => !empty(el.dataset.q));
       if (anyCollection) {
-        tiles.forEach(el => { if (empty(el.dataset.q)) markSoon(el, el.dataset.q); });
+        // Each style line shows only if at least one of its styles has items.
+        document.querySelectorAll(".style-group").forEach(group => {
+          const groupTiles = [...group.querySelectorAll(".cat-tile[data-q]")];
+          const live = groupTiles.some(el => !empty(el.dataset.q));
+          group.hidden = !live;
+          if (live) groupTiles.forEach(el => { if (empty(el.dataset.q)) markSoon(el, el.dataset.q); });
+        });
         document.getElementById("collections").hidden = false;
         document.querySelectorAll('[data-needs="collections"]').forEach(el => { el.hidden = false; });
       }
