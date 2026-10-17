@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>cKool n saSSii — Original Designs. Wear the Wave.</title>
-  <meta name="description" content="cKool n saSSii: original apparel in the Nautical line (Classic, Anchor, Helm) and the Be Strong series (Bear, Eagle, Gorilla, Lion, Wolf), in curated colorways. Not affiliated with any team." />
+  <meta name="description" content="cKool n saSSii: original apparel in the Nautical line (Classic, Anchor, Helm) the Be Strong series (Bear, Eagle, Gorilla, Lion, Wolf) and Believe, in curated colorways. Not affiliated with any team." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -374,6 +374,13 @@
     .style-group-strong .cat-icon { background: var(--gold-light); color: var(--navy); }
     .style-group-strong .cat-tile:hover .cat-icon { background: var(--navy); color: var(--gold); }
     .style-group[data-group="nautical"] .cat-grid { grid-template-columns: repeat(3, 1fr); }
+    .style-group[data-group="believe"] .cat-grid { grid-template-columns: 1fr; }
+    .cat-tile-wide { flex-direction: row; justify-content: center; gap: 18px; padding: 22px; }
+    .cat-tile-wide .cat-text { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; }
+    .cat-tile-wide .cat-label { font-family: var(--font-display); font-size: 22px; color: var(--navy); }
+    .cat-sub { font-size: 13px; color: var(--muted); }
+    .style-group-believe .cat-icon { background: var(--navy); color: var(--gold); }
+    .style-group-believe .cat-tile:hover .cat-icon { background: var(--gold); color: var(--navy); }
     .style-group[data-group="strong"] .cat-grid { grid-template-columns: repeat(5, 1fr); }
     @media(max-width: 900px) {
       .style-group[data-group="strong"] .cat-grid { grid-template-columns: repeat(3, 1fr); }
@@ -384,6 +391,7 @@
       .style-group[data-group="strong"] .cat-grid { grid-template-columns: repeat(2, 1fr); }
       .style-group[data-group="nautical"] .cat-tile:last-child,
       .style-group[data-group="strong"] .cat-tile:last-child { grid-column: 1 / -1; }
+      .style-group[data-group="believe"] .cat-grid { grid-template-columns: 1fr; }
     }
 
     /* ── SHOP BY CATEGORY (product-type cards) ── */
@@ -866,8 +874,8 @@
   <!-- ── PERKS STRIP ── -->
   <div class="perks-bar" aria-label="Store highlights">
     <div class="perks-scroll">
-      <div class="perks-set"><div class="perk-item">Original nautical designs</div><div class="perk-item">College Color Series available</div><div class="perk-item">Ships UPS Ground with tracking</div><div class="perk-item">Be Strong: Bear · Eagle · Gorilla · Lion · Wolf</div></div>
-      <div class="perks-set" aria-hidden="true"><div class="perk-item">Original nautical designs</div><div class="perk-item">College Color Series available</div><div class="perk-item">Ships UPS Ground with tracking</div><div class="perk-item">Be Strong: Bear · Eagle · Gorilla · Lion · Wolf</div></div>
+      <div class="perks-set"><div class="perk-item">Original nautical designs</div><div class="perk-item">College Color Series available</div><div class="perk-item">Believe: faith, worn every day</div><div class="perk-item">Ships UPS Ground with tracking</div><div class="perk-item">Be Strong: Bear · Eagle · Gorilla · Lion · Wolf</div></div>
+      <div class="perks-set" aria-hidden="true"><div class="perk-item">Original nautical designs</div><div class="perk-item">College Color Series available</div><div class="perk-item">Believe: faith, worn every day</div><div class="perk-item">Ships UPS Ground with tracking</div><div class="perk-item">Be Strong: Bear · Eagle · Gorilla · Lion · Wolf</div></div>
     </div>
   </div>
 
@@ -878,8 +886,8 @@
         <div class="hero-tag"><svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><path d="M12 7v14"/><path d="M8 11h8"/><path d="M5 14a7 7 0 0 0 14 0"/><path d="M5 14l-2 1.5M19 14l2 1.5"/></svg>Original Designs</div>
         <h1><em>Classic. Anchor. Helm.</em> <span class="h1-strong">Be Strong.</span></h1>
         <p class="hero-desc">
-          Nautical originals and the Be Strong series of bear, eagle, gorilla, lion and wolf,
-          released in curated colorways. Designed for style, not affiliation.
+          Nautical originals, the Be Strong series of bear, eagle, gorilla, lion and wolf,
+          and Believe, for keeping the faith. Released in curated colorways. Designed for style, not affiliation.
         </p>
         <div class="hero-cta">
           <a href="#shop" class="btn-primary">Shop Now →</a>
@@ -1013,7 +1021,7 @@
   <div class="section section-sm" id="collections" hidden>
     <div class="section-header">
       <h2>Shop by Style</h2>
-      <p>Eight original designs in two lines, each released in curated colorways.</p>
+      <p>Nine original designs in three lines, each released in curated colorways.</p>
     </div>
     <div class="style-group" data-group="nautical">
       <div class="style-group-head">
@@ -1061,6 +1069,21 @@
         <button class="cat-tile" data-q="wolf">
           <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3l4 5.5h6L19 3l.7 8.5-3.4 5.3L12 21l-4.3-4.2L4.3 11.5z"/><path d="M9.5 15.5L12 18l2.5-2.5"/><circle cx="9.4" cy="11.6" r="0.9" fill="currentColor" stroke="none"/><circle cx="14.6" cy="11.6" r="0.9" fill="currentColor" stroke="none"/><path d="M11 15.2h2l-1 1.1z" fill="currentColor"/></svg></span>
           <span class="cat-label">Wolf</span>
+        </button>
+      </div>
+    </div>
+    <div class="style-group style-group-believe" data-group="believe">
+      <div class="style-group-head">
+        <h3>Believe</h3>
+        <p>For the faith that carries you. A daily reminder to hold on and keep believing.</p>
+      </div>
+      <div class="cat-grid">
+        <button class="cat-tile cat-tile-wide" data-q="believe">
+          <span class="cat-icon"><svg class="ico" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 6.5c-1.6-.9-3.6-.6-4.8.8L12.4 11 6 8.2c-.5 3 .8 5.6 3.3 6.6L7 17.5c2.5 1.6 5.8 1.5 8.1-.4 2.2-1.8 3-4.6 2.4-7.2L21 6.5z"/><path d="M12.4 11l-1.8-6.2c2.6.2 4.6 2 5 4.4"/><circle cx="18.3" cy="7.6" r=".7" fill="currentColor" stroke="none"/><path d="M3 20c2.5-.4 4.6-1.4 6-2.8"/></svg></span>
+          <span class="cat-text">
+            <span class="cat-label">Believe</span>
+            <span class="cat-sub">Faith, worn every day</span>
+          </span>
         </button>
       </div>
     </div>
@@ -1139,7 +1162,7 @@
           <div class="label">Original designs, every piece</div>
         </div>
         <div class="about-stat">
-          <div class="num">8</div>
+          <div class="num">9</div>
           <div class="label">Original styles</div>
         </div>
 
@@ -1172,7 +1195,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="nav-logo">cKool n <span>saSSii</span></div>
-          <p>Original designs: the Nautical line (Classic, Anchor, Helm) and the Be Strong series, released in curated colorways.</p>
+          <p>Original designs: the Nautical line (Classic, Anchor, Helm), the Be Strong series and Believe, released in curated colorways.</p>
         </div>
         <div class="footer-col">
           <h5>Shop</h5>
@@ -1181,6 +1204,7 @@
           <a href="#shop" data-q="anchor" class="coll-link" hidden>Anchor</a>
           <a href="#shop" data-q="helm" class="coll-link" hidden>Helm</a>
           <a href="#shop" data-q="be strong" class="coll-link" hidden>Be Strong Series</a>
+          <a href="#shop" data-q="believe" class="coll-link" hidden>Believe</a>
           <a href="#shop" data-q="college color" class="coll-link" hidden>College Color Series</a>
         </div>
         <div class="footer-col">
@@ -1741,7 +1765,7 @@
           const note = document.createElement("span");
           note.className = "soon-note";
           note.textContent = "Coming soon";
-          el.appendChild(note);
+          (el.querySelector(".cat-text") || el).appendChild(note);
         }
         const name = el.querySelector(".type-name, .cat-label");
         el.setAttribute("aria-label", (name ? name.textContent.replace(/\u00ad|\u2011/g, "") : q) + ", coming soon");
